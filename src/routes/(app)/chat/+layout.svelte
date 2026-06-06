@@ -1,6 +1,6 @@
 <script>
 	import favicon from '$lib/assets/favicon.svg';
-	import AppSidebar from '$lib/components/sidenav/app-sidebar.svelte';
+	import AppSidebar from '$lib/components/appshell/app-sidebar.svelte';
 	import * as Sidebar from '$lib/components/ui/sidebar/index.js';
 
 	let { children } = $props();
