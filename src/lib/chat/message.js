@@ -10,11 +10,9 @@ export const message = {
     }) {
         return {
             id: crypto.randomUUID(),
-
             role,           // user, assistant, system
             type,           // text, card, chart, form, thinking
             status,         // pending, thinking, complete, error
-
             content,
             options,
             actions,

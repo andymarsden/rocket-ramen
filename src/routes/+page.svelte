@@ -1,15 +1,10 @@
 <script>
     import { chatState } from "$lib/chat";
+    import ChatComposer from "$lib/components/chat/ChatComposer.svelte";
 
-    let draft = $state("");
+    function handleSend(text) {
 
-    function sendMessage() {
-        if (!draft.trim()) {
-            return;
-        }
-
-        const userText = draft;
-        draft = "";
+        const userText = text;
 
         chatState.addUserMessage(userText);
 
@@ -44,25 +39,10 @@
         {/each}
     </div>
 
-    <div class="input-row">
-        <input
-            bind:value={draft}
-            placeholder="Type a message..."
-            onkeydown={(event) => {
-                if (event.key === "Enter") {
-                    sendMessage();
-                }
-            }}
-        />
-
-        <button onclick={sendMessage}>
-            Send
-        </button>
-    </div>
-
-    <button onclick={() => chatState.clearMessages()}>
-        Clear
-    </button>
+    <ChatComposer
+        send={handleSend}
+        on:clear={() => chatState.clearMessages()}
+    />
 </section>
 
 <style>
@@ -97,19 +77,5 @@
 
     .message.error {
         background: #fee2e2;
-    }
-
-    .input-row {
-        display: flex;
-        gap: 0.5rem;
-    }
-
-    input {
-        flex: 1;
-        padding: 0.75rem;
-    }
-
-    button {
-        padding: 0.75rem 1rem;
     }
 </style>
