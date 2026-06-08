@@ -150,11 +150,40 @@
 				icon: MapIcon,
 			},
 		],
+	recents: [
+			{
+				id: 1,
+				title: "Chat with Alice",
+				url: "#",
+				count:6
+			},
+			{
+				id: 2,
+				title: "Sprint sync",
+				url: "#",
+			},
+			{
+				id: 3,
+				title: "Product review",
+				url: "#",
+			},
+			{
+				id: 4,
+				title: "Design feedback",
+				url: "#",
+			},
+			{
+				id: 5,
+				title: "Quick notes",
+				url: "#",
+			},
+		],
 	};
 </script>
 
 <script>
 	import NavMain from "../appshell/nav-main.svelte";
+	import NavRecents from "../appshell/nav-recents.svelte";
 	import NavProjects from "./nav-projects.svelte";
 	import NavUser from "./nav-user.svelte";
 	import TeamSwitcher from "./team-switcher.svelte";
@@ -172,7 +201,9 @@
 	</Sidebar.Header>
 	<Sidebar.Content>
 		<NavMain items={data.navMain} />
+		
 		<NavProjects projects={data.projects} />
+		<NavRecents recents={data.recents} />
 	</Sidebar.Content>
 	<Sidebar.Footer>
 		<NavUser user={data.user} />

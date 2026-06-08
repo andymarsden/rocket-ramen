@@ -9,6 +9,7 @@ export const message = {
         actions = [],
         metadata = {},
         createdAt = new Date().toISOString(),
+        isValidated = true
     }) {
         return {
             id: crypto.randomUUID(),
@@ -21,6 +22,7 @@ export const message = {
             actions,
             metadata,
             createdAt,
+            isValidated
         };
     },
 

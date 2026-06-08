@@ -150,7 +150,7 @@
             </div>
         </div>
 
-        <p class="text-muted-foreground mt-2 px-2 text-xs">
+        <p class="text-muted-foreground mt-2 px-2 text-center text-xs">
             Enter sends. Shift + Enter adds a new line.
         </p>
     </form>

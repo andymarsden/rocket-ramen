@@ -10,7 +10,7 @@
 	>
 		<!-- Assistant  • {shortId(message.id)} • {shortId(message.conversationId)} • {lastAssistantMessageID === message.id ? "last message" : ""} • {isLastMessage}
 	 -->
-		Qrios Assistant
+		Assistant
 	</p>
 
 
