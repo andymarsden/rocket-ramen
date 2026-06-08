@@ -7,7 +7,8 @@ export const message = {
         status = "complete",
         options = [],
         actions = [],
-        metadata = {}
+        metadata = {},
+        createdAt = new Date().toISOString(),
     }) {
         return {
             id: crypto.randomUUID(),
@@ -19,6 +20,7 @@ export const message = {
             options,
             actions,
             metadata,
+            createdAt,
         };
     },
 

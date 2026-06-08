@@ -1,5 +1,6 @@
 <script>
 	let { message, user = "User"} = $props();
+	import { formatTimestamp } from "$lib/utils";
 </script>
 
 <article class="flex justify-end">
@@ -59,7 +60,7 @@
 			{/if}
 			<!-- <p class="text-muted-foreground text-[11px]">Andy • {formatTimestamp(message.createdAt)}  •  <a href="#"><u>edit</u></a></p> -->
 			<!-- <p class="text-muted-foreground text-[11px]">{user} • {formatTimestamp(message.createdAt)}  • {message.conversationId}</p> -->
-             <p class="text-muted-foreground text-[11px]">{user} </p>
+             <p class="text-muted-foreground text-[11px]">{user} • {formatTimestamp(message.createdAt)}  </p>
 			<!-- <p class="text-muted-foreground text-[11px]">{user} • {formatTimestamp(message.createdAt)} • {shortId(message.id)} • {shortId(message.conversationId)} • {lastAssistantMessageID === message.id ? "last message" : ""}</p> -->
 		</div>
 	</div>
