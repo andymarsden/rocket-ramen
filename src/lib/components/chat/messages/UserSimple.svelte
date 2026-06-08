@@ -4,7 +4,7 @@
 </script>
 
 <article class="flex justify-end">
-	<div class="bg-muted/70 text-foreground max-w-[85%] rounded-3xl border px-4 py-3 text-sm shadow-xs">
+	<div class="bg-muted/70 text-foreground min-w-[12rem] max-w-[85%] rounded-3xl border px-4 py-3 text-sm shadow-xs">
 		<p class="whitespace-pre-wrap wrap-break-word">{message.text}</p>
 		<div class="mt-2 flex items-center justify-end gap-1.5">
 			{#if message.isValidated === true}
