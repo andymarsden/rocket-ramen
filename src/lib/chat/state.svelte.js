@@ -3,6 +3,9 @@ import { message } from "./message.js";
 let messages = $state([]);
 let isTyping = $state(false);
 let activeFlow = $state(null);
+let conversationId = $state(null);
+let awaitResponse = $state(false);
+
 
 export const chatState = {
     get messages() {
