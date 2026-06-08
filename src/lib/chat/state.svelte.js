@@ -21,15 +21,15 @@ export const chatState = {
         messages.push(newMessage);
     },
 
-    addUserMessage(content) {
-        const newMessage = message.user(content);
+    addUserMessage(text) {
+        const newMessage = message.user(text);
         messages.push(newMessage);
 
         return newMessage;
     },
 
-    addAssistantMessage(content) {
-        const newMessage = message.assistant(content);
+    addAssistantMessage(text) {
+        const newMessage = message.assistant(text);
         messages.push(newMessage);
 
         return newMessage;

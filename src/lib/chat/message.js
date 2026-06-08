@@ -2,6 +2,7 @@ export const message = {
     create({
         role,
         content = "",
+        text = "",
         type = "text",
         status = "complete",
         options = [],
@@ -13,6 +14,7 @@ export const message = {
             role,           // user, assistant, system
             type,           // text, card, chart, form, thinking
             status,         // pending, thinking, complete, error
+            text,
             content,
             options,
             actions,
@@ -20,17 +22,17 @@ export const message = {
         };
     },
 
-    user(content) {
+    user(text) {
         return this.create({
             role: "user",
-            content
+            text
         });
     },
 
-    assistant(content) {
+    assistant(text) {
         return this.create({
             role: "assistant",
-            content
+            text
         });
     },
 

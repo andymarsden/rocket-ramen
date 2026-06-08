@@ -1,16 +1,41 @@
 <script>
     //#region _top
-    //#region _top
-    
+    //#endregion _top
+
     //#region Imports
     import * as DropdownMenu from "$lib/components/ui/dropdown-menu/index.js";
     import { Textarea } from "$lib/components/ui/textarea/index.js";
     import { Button } from "$lib/components/ui/button/index.js";
     import ChevronsUpDownIcon from "@lucide/svelte/icons/chevrons-up-down";
+    import { tick } from "svelte";
     //#endregion
 
+    import { chatState, sendMessage } from "$lib/chat";
+    
+    function send(text) {
+        const userText = text;
+
+        chatState.addUserMessage(userText);
+
+        chatState.setTyping(true);
+
+        const thinkingMessage = chatState.addThinkingMessage();
+
+        setTimeout(async () => {
+            chatState.removeMessage(thinkingMessage.id);
+
+            chatState.addAssistantMessage(`You said: ${userText}`);
+
+            chatState.setTyping(false);
+            // Wait for DOM updates after re-enabling before restoring focus.
+            await tick();
+            textareaRef?.focus();
+        }, 600);
+        sendMessage(text);
+    }
+
     //#region Props
-    let { send } = $props();
+    //let { send } = $props();
     //#endregion
 
     //#region Constants
@@ -20,7 +45,6 @@
     //#region Local state
     let textareaRef = $state(null);
     let draft = $state("");
-    let isThinking = $state(false);
     //#endregion
 
     //#region Helpers
@@ -29,9 +53,13 @@
 
         textareaRef.style.height = "auto";
 
-        const nextHeight = Math.min(textareaRef.scrollHeight, MAX_TEXTAREA_HEIGHT);
+        const nextHeight = Math.min(
+            textareaRef.scrollHeight,
+            MAX_TEXTAREA_HEIGHT,
+        );
         textareaRef.style.height = `${nextHeight}px`;
-        textareaRef.style.overflowY = textareaRef.scrollHeight > MAX_TEXTAREA_HEIGHT ? "auto" : "hidden";
+        textareaRef.style.overflowY =
+            textareaRef.scrollHeight > MAX_TEXTAREA_HEIGHT ? "auto" : "hidden";
     }
     //#endregion
 
@@ -62,15 +90,19 @@
     }
 
     function clearMessages() {
-        // Placeholder for future clear action.
+        chatState.clearMessages();
     }
     //#endregion
 </script>
 
-<div class="from-background via-background/95 to-background sticky bottom-0 border-t bg-linear-to-t px-3 pb-3 pt-4 md:px-6 md:pb-2">
+<div
+    class="from-background via-background/95 to-background sticky bottom-0 border-t bg-linear-to-t px-3 pb-3 pt-4 md:px-6 md:pb-2"
+>
     <!-- Composer form wrapper -->
     <form class="relative mx-auto w-full max-w-3xl" onsubmit={handleSubmit}>
-        <div class="bg-card ring-ring/30 focus-within:ring-ring rounded-3xl border p-2 shadow-sm transition-shadow focus-within:ring-2">
+        <div
+            class="bg-card ring-ring/30 focus-within:ring-ring rounded-3xl border p-2 shadow-sm transition-shadow focus-within:ring-2"
+        >
             <div class="flex items-center gap-2">
                 <Textarea
                     id="porto-input"
@@ -81,7 +113,7 @@
                     class="h-9 max-h-56 min-h-0 flex-1 resize-none border-0 bg-transparent px-3 py-1.5 text-base shadow-none focus-visible:ring-0 md:text-sm"
                     placeholder="Type a message..."
                     aria-describedby="composer-hint"
-                    disabled={isThinking}
+                    disabled={chatState.isTyping}
                 />
 
                 <!-- <DropdownMenu.Root>
@@ -104,10 +136,9 @@
                     type="submit"
                     size="icon-sm"
                     class="rounded-full"
-                    disabled={!draft.trim() || isThinking}
-                    aria-label={isThinking ? "Assistant is thinking" : "Send message"}
+                    disabled={!draft.trim() || chatState.isTyping}
                 >
-                    {#if isThinking}
+                    {#if chatState.isTyping}
                         <span
                             class="inline-block h-3.5 w-3.5 animate-spin rounded-full border-2 border-current border-r-transparent"
                             aria-hidden="true"
