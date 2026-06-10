@@ -44,13 +44,15 @@
 		</Button>
 	{/if}
 
-	{#each buttons as button, index}
-		<Button
-			variant={button.isSelected ? "default" : "outline"}
-			size="sm"
-			onclick={() => addUserMessage(index)}
-		>
-			{button.text}
-		</Button>
-	{/each}
+	<div class="mt-3 flex flex-wrap gap-2">
+		{#each buttons as button, index}
+			<Button
+				variant={button.isSelected ? "default" : "outline"}
+				size="sm"
+				onclick={() => addUserMessage(index)}
+			>
+				{button.text}
+			</Button>
+		{/each}
+	</div>
 </article>
