@@ -1,5 +1,6 @@
 <script>
     let { message } = $props();
+	import Button from "$lib/components/ui/button/button.svelte";
 </script>
 
 <!-- <article class="flex justify-start"> -->
@@ -20,5 +21,6 @@
 	>
 		{message.text}
 	</div>
-
+	
+<Button>Test 123</Button>
 </article>
