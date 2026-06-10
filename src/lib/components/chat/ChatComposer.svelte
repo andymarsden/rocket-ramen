@@ -10,28 +10,37 @@
     import { tick } from "svelte";
     //#endregion
 
-    import { chatState, sendMessage } from "$lib/chat";
+    import { chatState, composer } from "$lib/chat";
+    import { intent } from "$lib/chat/intent/engine.js";
     
-    function send(text) {
-        const userText = text;
+    async function send(text) {
+        // const userText = text;
 
-        chatState.addUserMessage(userText);
+        // chatState.addUserMessage(userText);
 
-        chatState.setTyping(true);
+        // chatState.setTyping(true);
 
-        const thinkingMessage = chatState.addThinkingMessage();
+        // //Detect intent using the intent engine
+        // const get_intent = await intent.detect(userText);
 
-        setTimeout(async () => {
-            chatState.removeMessage(thinkingMessage.id);
+        // console.log("Detected intent:", get_intent);
 
-            chatState.addAssistantMessage(`You said: ${userText}`);
+        // let assistantResponse = "Sorry, I didn't understand that.";
 
-            chatState.setTyping(false);
-            // Wait for DOM updates after re-enabling before restoring focus.
-            await tick();
-            textareaRef?.focus();
-        }, 600);
-        sendMessage(text);
+        // const thinkingMessage = chatState.addThinkingMessage();
+
+        // setTimeout(async () => {
+        //     chatState.removeMessage(thinkingMessage.id);
+
+        //     // chatState.addAssistantMessage(`You said: ${get_intent.payload.message}`);
+        //     chatState.addAssistantMessage(`You said: ${userText}`);
+
+        //     chatState.setTyping(false);
+        //     // Wait for DOM updates after re-enabling before restoring focus.
+        //     await tick();
+        //     textareaRef?.focus();
+        // }, 600);
+        composer.sendMessage(text);
     }
 
     //#region Props

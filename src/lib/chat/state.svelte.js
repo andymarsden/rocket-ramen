@@ -5,6 +5,7 @@ let isTyping = $state(false);
 let activeFlow = $state(null);
 let conversationId = $state(null);
 let awaitResponse = $state(false);
+let isTextAreaFocused = $state(false);
 
 
 export const chatState = {
@@ -53,6 +54,10 @@ export const chatState = {
 
     setTyping(value) {
         isTyping = value;
+    },
+
+    setTextAreaFocused(value) {
+        isTextAreaFocused = value;
     },
 
     startFlow(flowId) {
