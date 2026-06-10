@@ -153,9 +153,8 @@
 	recents: [
 			{
 				id: 1,
-				title: "Chat with Alice",
-				url: "#",
-				count:6
+				title: "Chat with Alice dfdsdfdgvfsfgdsfrfdsfvsfv sv",
+				url: "#"
 			},
 			{
 				id: 2,

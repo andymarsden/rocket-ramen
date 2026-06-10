@@ -31,7 +31,9 @@
                 </Sidebar.MenuButton>
 
                 {#if item.count !== undefined}
-                    <Sidebar.MenuBadge>{item.count}</Sidebar.MenuBadge>
+                    <Sidebar.MenuBadge class="bg-warning text-warning-foreground ring-1 ring-inset ring-sidebar-ring">
+                        {item.count}
+                    </Sidebar.MenuBadge>
                 {/if}
             </Sidebar.MenuItem>
         {/each}
