@@ -1,19 +1,35 @@
 <script>
-    let { message } = $props();
-	import Button from "$lib/components/ui/button/button.svelte";
+	import { Button } from "$lib/components/ui/button/index.js";
+	import { chatState } from "$lib/chat";
+
+	let { message } = $props();
+	let buttons = $state([
+		{
+			text: "Add as user message",
+			isSelected: false,
+		},
+		{
+			text: "Copy to clipboard",
+			isSelected: false,
+		},
+	]);
+
+	function addUserMessage(index) {
+		chatState.addUserMessage(message.text);
+		buttons = buttons.map((button, buttonIndex) => ({
+			...button,
+			isSelected: buttonIndex === index,
+		}));
+	}
+
 </script>
 
-<!-- <article class="flex justify-start"> -->
-
-    <article class="text-foreground text-[15px] leading-7">
+<article class="text-foreground text-[15px] leading-7">
 	<p
 		class="text-muted-foreground mb-2 text-xs font-medium uppercase tracking-wide"
 	>
-		<!-- Assistant  • {shortId(message.id)} • {shortId(message.conversationId)} • {lastAssistantMessageID === message.id ? "last message" : ""} • {isLastMessage}
-	 -->
 		Assistant
 	</p>
-
 
 	<div
 		class="assistant-markdown wrap-break-word"
@@ -21,6 +37,20 @@
 	>
 		{message.text}
 	</div>
-	
-<Button>Test 123</Button>
+
+	{#if message.options?.length}
+		<Button variant="outline" size="sm" onclick={addUserMessage}>
+			Add as user message
+		</Button>
+	{/if}
+
+	{#each buttons as button, index}
+		<Button
+			variant={button.isSelected ? "default" : "outline"}
+			size="sm"
+			onclick={() => addUserMessage(index)}
+		>
+			{button.text}
+		</Button>
+	{/each}
 </article>
