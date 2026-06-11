@@ -1,21 +1,26 @@
 <script>
 	import { Button } from "$lib/components/ui/button/index.js";
-	import { chatState } from "$lib/chat";
+	//import { chatState } from "$lib/chat";
+	import { composer } from "$lib/chat/composer.js";
 
 	let { message } = $props();
+
 	let buttons = $state([
 		{
 			text: "Add as user message",
+			value: "add_as_user_message",
 			isSelected: false,
 		},
 		{
 			text: "Copy to clipboard",
+			value: "copy_to_clipboard",
 			isSelected: false,
 		},
 	]);
 
 	function addUserMessage(index) {
-		chatState.addUserMessage(message.text);
+		const selectedButton = buttons[index];
+		composer.sendMessage(selectedButton?.value);
 		buttons = buttons.map((button, buttonIndex) => ({
 			...button,
 			isSelected: buttonIndex === index,
@@ -38,11 +43,11 @@
 		{message.text}
 	</div>
 
-	{#if message.options?.length}
-		<Button variant="outline" size="sm" onclick={addUserMessage}>
+	<!-- {#if message.options?.length}
+		<Button variant="outline" size="sm" onclick={() => addUserMessage(0)}>
 			Add as user message
 		</Button>
-	{/if}
+	{/if} -->
 
 	<div class="mt-3 flex flex-wrap gap-2">
 		{#each buttons as button, index}

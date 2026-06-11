@@ -25,13 +25,14 @@ export const intent = {
         const payload = intent.extract ? intent.extract(normalized): {};
 
         try {
-            const response = await intent.run(payload);
+            const content = await intent.run(payload);
             return {
                 success: true,
                 error: null,
                 intent: intent.id,
                 payload,
-                content: response
+                content
+                //content: response
             };
         } catch (error) {
             return {

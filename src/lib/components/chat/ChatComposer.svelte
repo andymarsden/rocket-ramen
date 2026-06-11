@@ -7,44 +7,46 @@
     import { Textarea } from "$lib/components/ui/textarea/index.js";
     import { Button } from "$lib/components/ui/button/index.js";
     import ChevronsUpDownIcon from "@lucide/svelte/icons/chevrons-up-down";
-    import { tick } from "svelte";
+    import { onMount, tick } from "svelte";
     //#endregion
 
     import { chatState, composer } from "$lib/chat";
     import { intent } from "$lib/chat/intent/engine.js";
-    
-    async function send(text) {
-        // const userText = text;
-
-        // chatState.addUserMessage(userText);
-
-        // chatState.setTyping(true);
-
-        // //Detect intent using the intent engine
-        // const get_intent = await intent.detect(userText);
-
-        // console.log("Detected intent:", get_intent);
-
-        // let assistantResponse = "Sorry, I didn't understand that.";
-
-        // const thinkingMessage = chatState.addThinkingMessage();
-
-        // setTimeout(async () => {
-        //     chatState.removeMessage(thinkingMessage.id);
-
-        //     // chatState.addAssistantMessage(`You said: ${get_intent.payload.message}`);
-        //     chatState.addAssistantMessage(`You said: ${userText}`);
-
-        //     chatState.setTyping(false);
-        //     // Wait for DOM updates after re-enabling before restoring focus.
-        //     await tick();
-        //     textareaRef?.focus();
-        // }, 600);
-        composer.sendMessage(text);
-    }
 
     //#region Props
     //let { send } = $props();
+    //#endregion
+
+    //#region Event handlers
+
+    async function send(){
+        const text = draft.trim();
+        if (!text) return;
+        await composer.sendMessage(text);
+        draft = "";
+        console.log("Message sent:", text);
+    }
+
+    async function handleSubmit(event) {
+        event?.preventDefault();
+
+        const text = draft.trim();
+        if (!text) return;
+
+        await send();
+    }
+
+    async function handleComposerKeydown(event) {
+        if (event.key !== "Enter") return;
+        if (event.shiftKey) return;
+
+        event.preventDefault();
+        await send();
+    }
+
+    function clearMessages() {
+        chatState.clearMessages();
+    }
     //#endregion
 
     //#region Constants
@@ -55,6 +57,12 @@
     let textareaRef = $state(null);
     let draft = $state("");
     //#endregion
+
+    onMount(() => {
+        tick().then(() => {
+            textareaRef?.focus();
+        });
+    });
 
     //#region Helpers
     function autoResizeTextarea() {
@@ -77,30 +85,15 @@
         draft;
         autoResizeTextarea();
     });
-    //#endregion
 
-    //#region Event handlers
-    function handleComposerKeydown(event) {
-        if (event.key !== "Enter") return;
-        if (event.shiftKey) return;
+    $effect(() => {
+        if (!chatState.isTextAreaFocused) return;
 
-        event.preventDefault();
-        handleSubmit();
-    }
-
-    function handleSubmit(event) {
-        event?.preventDefault();
-
-        const text = draft.trim();
-        if (!text) return;
-
-        send(text);
-        draft = "";
-    }
-
-    function clearMessages() {
-        chatState.clearMessages();
-    }
+        tick().then(() => {
+            textareaRef?.focus();
+            chatState.setTextAreaFocused(false);
+        });
+    });
     //#endregion
 </script>
 

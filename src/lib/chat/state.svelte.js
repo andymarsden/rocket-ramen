@@ -17,6 +17,10 @@ export const chatState = {
         return isTyping;
     },
 
+    get isTextAreaFocused() {
+        return isTextAreaFocused;
+    },
+
     get activeFlow() {
         return activeFlow;
     },

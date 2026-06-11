@@ -6,7 +6,6 @@ export function cn(...inputs) {
 }
 
 export function formatTimestamp(value) {
-	console.log("formatTimestamp called with value:", value);
 	const date = new Date(value);
 	if (Number.isNaN(date.getTime())) return "";
 
