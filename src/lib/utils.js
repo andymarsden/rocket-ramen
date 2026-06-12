@@ -15,4 +15,9 @@ export function formatTimestamp(value) {
 	});
 }
 
+export async function wait(ms) {
+	return new Promise((resolve) => {
+		setTimeout(resolve, ms);
+	});
+}
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

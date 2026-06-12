@@ -39,7 +39,7 @@
 				title: "Playground",
 				url: "#",
 				icon: SquareTerminalIcon,
-				isActive: true,
+				isActive: false,
 				items: [
 					{
 						title: "Chat",
@@ -201,7 +201,7 @@
 	<Sidebar.Content>
 		<NavMain items={data.navMain} />
 		
-		<NavProjects projects={data.projects} />
+		<!-- <NavProjects projects={data.projects} /> -->
 		<NavRecents recents={data.recents} />
 	</Sidebar.Content>
 	<Sidebar.Footer>

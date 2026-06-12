@@ -8,7 +8,7 @@
 	} = $props();
 </script>
 
-<Sidebar.Group>
+<Sidebar.Group >
 	<Sidebar.GroupLabel>Platform</Sidebar.GroupLabel>
 	<Sidebar.Menu>
 		{#each items as item (item.title)}

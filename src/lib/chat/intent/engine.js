@@ -1,5 +1,5 @@
 import { rules } from "./rules.js";
-
+import { chatState } from "$lib/chat";
 export const intent = {
 
     async detect(text, conversationId = null) {

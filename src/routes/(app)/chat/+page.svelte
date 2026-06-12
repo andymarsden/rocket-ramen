@@ -11,8 +11,14 @@
 
 <main class="bg-background flex h-dvh min-h-0 flex-1 flex-col">
     <section class="relative flex min-h-0 flex-1 flex-col">
+
+  
         <Messages />
 
         <ChatComposer />
     </section>
 </main>
+
+<style>
+
+</style>
