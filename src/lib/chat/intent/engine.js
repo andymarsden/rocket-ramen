@@ -31,7 +31,9 @@ export const intent = {
                 error: null,
                 intent: intent.id,
                 payload,
-                content
+                content: content.content,
+                type: content.type,
+                role: content.role
                 //content: response
             };
         } catch (error) {

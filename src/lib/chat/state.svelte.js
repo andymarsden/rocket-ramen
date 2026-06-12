@@ -6,6 +6,8 @@ let activeFlow = $state(null);
 let conversationId = $state(null);
 let awaitResponse = $state(false);
 let isTextAreaFocused = $state(false);
+// let context = $state(null); 
+//let data_context = $state(null); // New state variable for data context
 
 
 export const chatState = {
@@ -24,6 +26,17 @@ export const chatState = {
     get activeFlow() {
         return activeFlow;
     },
+
+
+    // Need to think about this.
+    // // //Context 
+    // // get context() {
+    // //     return context;
+    // // },
+
+    // // setContext(newContext) {
+    // //     context = newContext;
+    // // },
 
     addMessage(newMessage) {
         messages.push(newMessage);

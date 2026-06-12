@@ -32,7 +32,7 @@ export const composer = {
         if(!get_intent.success) {
             assistantResponse = get_intent.error.message;
         }else{
-            assistantResponse = get_intent.content.content.text;
+            assistantResponse = get_intent;
         }
 
    
@@ -40,7 +40,7 @@ export const composer = {
         await wait(600);
 
         chatState.removeMessage(thinkingMessage.id);
-        chatState.addAssistantMessage(assistantResponse);
+        chatState.addMessage(assistantResponse);
         chatState.setTyping(false);
         chatState.setTextAreaFocused(true);
 

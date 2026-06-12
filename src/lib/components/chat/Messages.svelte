@@ -3,14 +3,21 @@
     import UserSimple from "./messages/UserSimple.svelte";
     import AssistantSimple from "./messages/AssistantSimple.svelte";
     import ThinkingSimple from "./messages/ThinkingSimple.svelte";
+    import BiNumber from "./messages/bi/BiNumber.svelte";
 </script>
- <div class="min-h-0 flex-1 overflow-y-auto scroll-smooth">
-    <div class="mx-auto w-full max-w-3xl px-4 py-8 md:px-6" style="padding-bottom: clamp(10rem, 50vh, 24rem);">
+
+<div class="min-h-0 flex-1 overflow-y-auto scroll-smooth">
+    <div
+        class="mx-auto w-full max-w-3xl px-4 py-8 md:px-6"
+        style="padding-bottom: clamp(10rem, 50vh, 24rem);"
+    >
         <div id="messages" class="flex flex-col gap-8">
             {#each chatState.messages as message}
                 <div>
                     {#if message.type === "thinking"}
-                        <ThinkingSimple {message}/>
+                        <ThinkingSimple {message} />
+                    {:else if message.type === "query_qrios_bi" && message.role === "assistant"}
+                        <BiNumber {message} />
                     {:else if message.role === "user"}
                         <UserSimple {message} />
                     {:else}
@@ -21,5 +28,7 @@
         </div>
     </div>
 </div>
+<!--  -->
+
 <style>
 </style>

@@ -1,4 +1,6 @@
 const N8N_WORKFLOW_URL = import.meta.env?.VITE_N8N_WEBHOOK_URL || "https://infojam.app.n8n.cloud/webhook/7486e492-de09-4764-bea5-8e63dbfe8deb";
+import { message } from "$lib/chat/message.js";
+
 
 async function postToN8nWorkflow(message) {
     if (!N8N_WORKFLOW_URL) {
@@ -43,15 +45,24 @@ export const rules = [
             };
         },
 
-        async run({ message }) {
+        async run({ message: inputMessage }) {
             //await wait(500);
-            return {
-                content: {
-                    text: message || "Echo mode active. Type /echo followed by text to repeat it."
-                },
-                options: [],
-                type: "echo"
-            };
+            //const m =;
+
+            return  message.create({
+                role: "assistant",
+                content: { text: inputMessage || "Echo mode active. Type /echo followed by text to repeat it." },
+                type: "echo",
+            });
+
+
+            // return {
+            //     content: {
+            //         text: message || "Echo mode active. Type /echo followed by text to repeat it."
+            //     },
+            //     options: [],
+            //     type: "echo"
+            // };
         }
     },
 
@@ -71,20 +82,22 @@ export const rules = [
             };
         },
 
-        async run({ message }) {
-            const result = await postToN8nWorkflow(message || "");
+        async run({ message: inputMessage }) {
+            const result = await postToN8nWorkflow(inputMessage || "");
 
             console.log("N8N workflow result:", result);
-            return {
+
+            return message.create({
+                role: "assistant",
                 content: {
                     text: typeof result?.result === "string"
                         ? result.result
                         : JSON.stringify(result, null, 2),
                     data: result
                 },
-                options: [],
-                type: "query_qrios"
-            };
+                type: "query_qrios_bi",
+            })
+
         }
     }
 

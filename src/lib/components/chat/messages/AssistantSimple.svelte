@@ -4,7 +4,7 @@
 	import { composer } from "$lib/chat/composer.js";
 
 	let { message } = $props();
-
+	console.log("AssistantSimple message:", message);
 	let buttons = $state([
 		{
 			text: "Add as user message",
@@ -40,7 +40,7 @@
 		class="assistant-markdown wrap-break-word"
 		data-testid="assistant-markdown"
 	>
-		{message.text}
+		{message.content.text}
 	</div>
 
 	<!-- {#if message.options?.length}
