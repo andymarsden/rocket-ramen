@@ -18,7 +18,9 @@ export const intent = {
                 },
                 intent: null,
                 payload: null,
-                content: null
+                content: {text: "Sorry, I don't understand that command."},
+                type: "error",
+                role: "assistant"
             };
         }
 

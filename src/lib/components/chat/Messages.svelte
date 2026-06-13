@@ -31,4 +31,32 @@
 <!--  -->
 
 <style>
+   .fancy {
+        position: relative;
+        overflow: hidden;
+        border: 2px solid rgba(255, 251, 20, 0.95);
+        box-shadow:
+            0 0 0 1px rgba(255, 255, 255, 0.08),
+            0 0 24px rgba(255, 251, 20, 0.45),
+            inset 0 0 18px rgba(255, 251, 20, 0.22);
+        padding: 1rem;
+    }
+
+    /* .fancy::before {
+        content: "";
+        position: absolute;
+        inset: -12px;
+        border-radius: calc(1rem + 12px);
+        background: conic-gradient(from 0deg, #000000, #000000, #8b5cf6, #000000, #000000, #000000);
+        filter: blur(18px);
+        opacity: 0.7;
+        animation: fancy-spin 1s linear infinite;
+        z-index: -1;
+    }
+
+    @keyframes fancy-spin {
+        to {
+            transform: rotate(360deg);
+        }
+    } */
 </style>

@@ -11,14 +11,13 @@
 
 <main class="bg-background flex h-dvh min-h-0 flex-1 flex-col">
     <section class="relative flex min-h-0 flex-1 flex-col">
-
-  
-        <Messages />
+        <Messages/>
 
         <ChatComposer />
     </section>
 </main>
 
 <style>
-
+ 
 </style>
+ <!-- #ff1493, #8b5cf6, #22d3ee, #ff1493); -->

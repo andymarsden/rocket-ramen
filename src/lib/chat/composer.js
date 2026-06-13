@@ -9,7 +9,7 @@ export const composer = {
 
         chatState.setTyping(true);
 
-             const thinkingMessage = chatState.addThinkingMessage();
+        const thinkingMessage = chatState.addThinkingMessage();
              
         //does it look like the user is trying to cancel or stop something?
         //is current flow?
@@ -30,7 +30,7 @@ export const composer = {
         let assistantResponse = "";
 
         if(!get_intent.success) {
-            assistantResponse = get_intent.error.message;
+            assistantResponse = get_intent;
         }else{
             assistantResponse = get_intent;
         }
@@ -43,8 +43,6 @@ export const composer = {
         chatState.addMessage(assistantResponse);
         chatState.setTyping(false);
         chatState.setTextAreaFocused(true);
-
-        return "test";
     }
 };
 
