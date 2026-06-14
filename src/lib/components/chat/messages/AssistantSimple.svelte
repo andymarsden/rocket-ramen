@@ -2,9 +2,13 @@
 	import { Button } from "$lib/components/ui/button/index.js";
 	//import { chatState } from "$lib/chat";
 	import { composer } from "$lib/chat/composer.js";
+	import { marked } from "marked";
 
 	let { message } = $props();
 	console.log("AssistantSimple message:", message);
+	
+	// Parse markdown content
+	const htmlContent = marked(message.content.text);
 	let buttons = $state([
 		{
 			text: "Add as user message",
@@ -40,7 +44,7 @@
 		class="assistant-markdown wrap-break-word"
 		data-testid="assistant-markdown"
 	>
-		{message.content.text}
+		{@html htmlContent}
 	</div>
 
 	<!-- {#if message.options?.length}

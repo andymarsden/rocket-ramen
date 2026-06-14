@@ -1,4 +1,5 @@
 const N8N_WORKFLOW_URL = import.meta.env?.VITE_N8N_WEBHOOK_URL || "https://infojam.app.n8n.cloud/webhook/7486e492-de09-4764-bea5-8e63dbfe8deb";
+
 import { message } from "$lib/chat/message.js";
 
 
