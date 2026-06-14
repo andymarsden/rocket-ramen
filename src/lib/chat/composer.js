@@ -4,13 +4,14 @@ import { wait } from "$lib/utils.js";
 import { flow } from "$lib/chat/flows/engine.js";
 export const composer = {
     sendMessage: async function (userText) {
-
         chatState.addUserMessage(userText);
+
 
         chatState.setTyping(true);
 
         const thinkingMessage = chatState.addThinkingMessage();
-                     await wait(600);
+        
+        await wait(600);
         //does it look like the user is trying to cancel or stop something?
         //is current flow?
         //is follow up question?
@@ -19,6 +20,7 @@ export const composer = {
 
         if(chatState.activeFlow) {
             console.log("Current flow:", chatState.activeFlow.id);
+            //return;
         }
 
 
@@ -37,13 +39,13 @@ export const composer = {
 
             chatState.removeMessage(thinkingMessage.id);
             chatState.addMessage(assistantResponse);
-            await wait(200);
 
+            
             //is the intent to start a flow? if so, we need to start the flow and set the current flow in chatState
             if(get_intent.intent_action === "start_flow") {
                 let starting_message =  await flow.start(get_intent.flow_id);
-
                 chatState.addMessage(starting_message);
+                chatState.updateActiveMessageId(starting_message.id);
             }
             
                     
@@ -59,6 +61,7 @@ export const composer = {
             return;
         }
 
+         chatState.updateActiveMessageId(null);
 
 
         chatState.removeMessage(thinkingMessage.id);

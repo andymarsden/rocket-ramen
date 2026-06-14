@@ -4,7 +4,8 @@ let messages = $state([]);
 let isTyping = $state(false);
 let activeFlow = $state(null);
 let conversationId = $state(null);
-let awaitResponse = $state(false);
+//let awaitResponse = $state(false);
+let activeMessageId = $state(null);
 let isTextAreaFocused = $state(false);
 // let context = $state(null); 
 //let data_context = $state(null); // New state variable for data context
@@ -27,6 +28,9 @@ export const chatState = {
         return activeFlow;
     },
 
+    get activeMessageId() {
+        return activeMessageId;
+    },
 
     // Need to think about this.
     // // //Context 
@@ -38,8 +42,25 @@ export const chatState = {
     // //     context = newContext;
     // // },
 
+    updateActiveMessageId(messageId) {
+        activeMessageId = messageId;
+    },
+
     addMessage(newMessage) {
         messages.push(newMessage);
+    },
+
+    updateMessage(messageId, updates) {
+        messages = messages.map(existingMessage => {
+            if (existingMessage.id !== messageId) {
+                return existingMessage;
+            }
+
+            return {
+                ...existingMessage,
+                ...updates
+            };
+        });
     },
 
     addUserMessage(text) {

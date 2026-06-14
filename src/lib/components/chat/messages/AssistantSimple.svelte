@@ -1,6 +1,6 @@
 <script>
 	import { Button } from "$lib/components/ui/button/index.js";
-	//import { chatState } from "$lib/chat";
+	import { chatState } from "$lib/chat";
 	import { composer } from "$lib/chat/composer.js";
 	import { marked } from "marked";
 
@@ -8,7 +8,10 @@
 
 	let { message } = $props();
 
+	let activeMessageId = $derived(chatState.activeMessageId);
+
 	// Parse markdown content
+
 
 	import DOMPurify from "dompurify";
 
@@ -38,10 +41,12 @@
 	function addUserMessage(index) {
 		const selectedButton = message.options[index];
 		composer.sendMessage(selectedButton?.value);
-		message.options = message.options.map((button, buttonIndex) => ({
+		const updatedOptions = message.options.map((button, buttonIndex) => ({
 			...button,
 			isSelected: buttonIndex === index,
 		}));
+
+		chatState.updateMessage(message.id, { options: updatedOptions });
 	}
 </script>
 
@@ -55,23 +60,14 @@
 		{@html htmlContent}
 	</div>
 
-	<!-- <div class="mt-3 flex flex-wrap gap-2">
-		{#each buttons as button, index}
-			<Button
-				variant={button.isSelected ? "default" : "outline"}
-				size="sm"
-				onclick={() => addUserMessage(index)}
-			>
-				{button.text}
-			</Button>
-		{/each}
-	</div> -->
 	<div class="mt-3 flex flex-wrap gap-2">
 		{#each message.options as button, index}
 			<Button
 				variant={button.isSelected ? "default" : "outline"}
 				size="sm"
+				disabled= {activeMessageId !== message.id}
 				onclick={() => addUserMessage(index)}
+				class="cursor-pointer"
 			>
 				{button.text}
 			</Button>

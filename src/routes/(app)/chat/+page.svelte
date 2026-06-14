@@ -13,6 +13,7 @@
     <section class="relative flex min-h-0 flex-1 flex-col">
 
 Current Flow: {chatState.activeFlow ? chatState.activeFlow.id : "None"}
+Active Message ID: {chatState.activeMessageId ? chatState.activeMessageId : "None"}
         <Messages/>
 
         <!-- {#if chatState.activeFlow}
