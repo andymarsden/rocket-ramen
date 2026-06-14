@@ -7,19 +7,11 @@
       "name": "Hub Attended",
       "question": "### Details\n\n\n---\n\n\nThese questions help us understand where and when the conversation is happening...",
       "options": [
-        "[a] Chester -Tomorrows Women",
-        "[b] Chester Blacon",
-        "[c] Chester City Centre",
-        "[d] Ellesmere Port",
-        "[e] Frodsham",
-        "[f] Helsby",
-        "[g] Lache",
-        "[h] Malpas",
-        "[i] Neston",
-        "[j] Northwich",
-        "[k] Tarporley",
-        "[l] Winsford",
-        "[z] Skip"
+        {"text": "Chester -Tomorrows Women", "isSelected": false, "value":"chester_tomorrows_women"},
+        {"text": "Chester - The Hive", "isSelected": false, "value":"chester_the_hive"},
+        {"text": "Chester Blacon", "isSelected": false, "value":"chester_blacon"},
+
+        {"text": "Skip", "isSelected": false, "value":"skip"}
       ],
       "section": "details",
       "isSectionStart": true,

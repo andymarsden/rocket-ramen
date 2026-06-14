@@ -10,7 +10,7 @@ export const composer = {
         chatState.setTyping(true);
 
         const thinkingMessage = chatState.addThinkingMessage();
-             
+                     await wait(600);
         //does it look like the user is trying to cancel or stop something?
         //is current flow?
         //is follow up question?
@@ -35,16 +35,35 @@ export const composer = {
 
             assistantResponse = get_intent;
 
+            chatState.removeMessage(thinkingMessage.id);
+            chatState.addMessage(assistantResponse);
+            await wait(200);
+
             //is the intent to start a flow? if so, we need to start the flow and set the current flow in chatState
             if(get_intent.intent_action === "start_flow") {
-                flow.start(get_intent.flow_id);
+                let starting_message =  await flow.start(get_intent.flow_id);
+
+                chatState.addMessage(starting_message);
             }
+            
+                    
+            
+
+            
+
+            //TODO : handle other intent actions like "end_flow", "next_step", etc.
+            //TODO : sort out duplication
+            chatState.setTyping(false);
+            chatState.setTextAreaFocused(true);
+            
+            return;
         }
 
-        await wait(600);
+
 
         chatState.removeMessage(thinkingMessage.id);
         chatState.addMessage(assistantResponse);
+        //TODO : sort out duplication
         chatState.setTyping(false);
         chatState.setTextAreaFocused(true);
     }

@@ -77,12 +77,8 @@ export const chatState = {
         isTextAreaFocused = value;
     },
 
-    startFlow(flowId) {
-        activeFlow = {
-            id: flowId,
-            currentStepIndex: 0,
-            answers: {}
-        };
+    startFlow(flow) {
+        activeFlow = flow;
     },
 
     clearFlow() {
