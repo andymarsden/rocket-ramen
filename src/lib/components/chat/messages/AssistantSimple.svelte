@@ -4,11 +4,22 @@
 	import { composer } from "$lib/chat/composer.js";
 	import { marked } from "marked";
 
+	import "github-markdown-css/github-markdown.css";
+
 	let { message } = $props();
-	console.log("AssistantSimple message:", message);
-	
+
 	// Parse markdown content
-	const htmlContent = marked(message.content.text);
+
+	import DOMPurify from "dompurify";
+
+	marked.use({
+		gfm: true,
+		breaks: true,
+	});
+
+	const htmlContent = DOMPurify.sanitize(marked.parse(message.content.text));
+
+	//const htmlContent = marked(message.content.text);
 	let buttons = $state([
 		{
 			text: "Add as user message",
@@ -30,7 +41,6 @@
 			isSelected: buttonIndex === index,
 		}));
 	}
-
 </script>
 
 <article class="text-foreground text-[15px] leading-7">
@@ -39,19 +49,9 @@
 	>
 		Assistant
 	</p>
-
-	<div
-		class="assistant-markdown wrap-break-word"
-		data-testid="assistant-markdown"
-	>
+	<div class="assistant-markdown wrap-break-word markdown-body">
 		{@html htmlContent}
 	</div>
-
-	<!-- {#if message.options?.length}
-		<Button variant="outline" size="sm" onclick={() => addUserMessage(0)}>
-			Add as user message
-		</Button>
-	{/if} -->
 
 	<div class="mt-3 flex flex-wrap gap-2">
 		{#each buttons as button, index}

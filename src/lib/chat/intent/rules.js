@@ -1,14 +1,14 @@
 const N8N_WORKFLOW_URL = import.meta.env?.VITE_N8N_WEBHOOK_URL || "https://infojam.app.n8n.cloud/webhook/7486e492-de09-4764-bea5-8e63dbfe8deb";
 
 const n8n_workflows = {
-  tts: "https://infojam.app.n8n.cloud/webhook/7486e492-de09-4764-bea5-8e63dbfe8deb",
-  llc_dc: "https://infojam.app.n8n.cloud/webhook/1fdfa3a1-4b77-4d27-95a5-d82733f4cfed"
+    tts: "https://infojam.app.n8n.cloud/webhook/7486e492-de09-4764-bea5-8e63dbfe8deb",
+    lcc_dc: "https://infojam.app.n8n.cloud/webhook/1fdfa3a1-4b77-4d27-95a5-d82733f4cfed"
 };
 
 import { message } from "$lib/chat/message.js";
 
 
-async function postToN8nWorkflow(message,url) {
+async function postToN8nWorkflow(payload, url) {
     if (!url) {
         throw new Error("N8N workflow URL is not configured. Set VITE_N8N_WEBHOOK_URL in your environment.");
     }
@@ -18,7 +18,7 @@ async function postToN8nWorkflow(message,url) {
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({ message })
+        body: JSON.stringify(payload)
     });
 
     const rawText = await response.text();
@@ -55,7 +55,7 @@ export const rules = [
             //await wait(500);
             //const m =;
 
-            return  message.create({
+            return message.create({
                 role: "assistant",
                 content: { text: inputMessage || "Echo mode active. Type /echo followed by text to repeat it." },
                 type: "echo",
@@ -63,7 +63,7 @@ export const rules = [
         }
     },
 
-{
+    {
         id: "query_qrios",
 
         //permissions: ["staff"],
@@ -80,7 +80,7 @@ export const rules = [
         },
 
         async run({ message: inputMessage }) {
-            const result = await postToN8nWorkflow(inputMessage || "",n8n_workflows.tts);
+            const result = await postToN8nWorkflow({ message: inputMessage || "" }, n8n_workflows.tts);
 
             console.log("N8N workflow result:", result);
 
@@ -96,8 +96,35 @@ export const rules = [
             })
 
         }
+    },
+
+    {
+        id: "query_dc",
+
+        match(text) {
+            return text === "/dc" || text.startsWith("/dc ");
+        },
+
+        extract(text) {
+            return {
+                message: text.replace(/^\/dc\s*/, "")
+            };
+        },
+
+        async run({ message: inputMessage }) {
+            const result = await postToN8nWorkflow({ question: inputMessage || "Tell me what I can do with this search" }, n8n_workflows.lcc_dc);
+
+            console.log("N8N workflow result:", result);
+
+            return message.create({
+                role: "assistant",
+                content: {
+                    text: result[0].choices[0].message.content,
+                    data: result
+                },
+                type: "query_lcc_dc",
+            });
+        }
     }
-
-
 
 ];
