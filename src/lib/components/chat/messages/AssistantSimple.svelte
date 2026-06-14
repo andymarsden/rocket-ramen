@@ -17,7 +17,9 @@
 		breaks: true,
 	});
 
-	const htmlContent = DOMPurify.sanitize(marked.parse(message.content.text));
+	const htmlContent = $derived(
+		DOMPurify.sanitize(marked.parse(message?.content?.text || ""))
+	);
 
 	//const htmlContent = marked(message.content.text);
 	let buttons = $state([
@@ -65,3 +67,15 @@
 		{/each}
 	</div>
 </article>
+
+<style>
+	:global(.assistant-markdown.markdown-body) {
+		background-color: hsl(var(--background));
+		color: hsl(var(--foreground));
+	}
+
+	:global(.dark .assistant-markdown.markdown-body) {
+		background-color: hsl(var(--background));
+		color: hsl(var(--foreground));
+	}
+</style>
