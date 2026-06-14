@@ -1,0 +1,42 @@
+{
+  "id": "qrios_flow",
+  "steps": [
+    {
+      "index": 0,
+      "id": "hub",
+      "name": "Hub Attended",
+      "question": "### Details\n\n\n---\n\n\nThese questions help us understand where and when the conversation is happening...",
+      "options": [
+        "[a] Chester -Tomorrows Women",
+        "[b] Chester Blacon",
+        "[c] Chester City Centre",
+        "[d] Ellesmere Port",
+        "[e] Frodsham",
+        "[f] Helsby",
+        "[g] Lache",
+        "[h] Malpas",
+        "[i] Neston",
+        "[j] Northwich",
+        "[k] Tarporley",
+        "[l] Winsford",
+        "[z] Skip"
+      ],
+      "section": "details",
+      "isSectionStart": true,
+      "default": "Today"
+    },
+    {
+      "index": 1,
+      "id": "when_attended",
+      "name": "When Attended",
+      "question": "When did you attend the talking point? (Type a date or choose an option)",
+      "transform": "util.textToDate",
+      "default": "Today",
+      "options": [
+        "Today",
+        "Yesterday"
+      ],
+      "section": "details"
+    }
+  ]
+}

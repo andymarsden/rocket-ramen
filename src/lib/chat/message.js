@@ -9,7 +9,10 @@ export const message = {
         actions = [],
         metadata = {},
         createdAt = new Date().toISOString(),
-        isValidated = true
+        isValidated = true,
+        flow_id = null,
+        //intent = null,
+        intent_action = null
     }) {
         return {
             id: crypto.randomUUID(),
@@ -22,7 +25,10 @@ export const message = {
             actions,
             metadata,
             createdAt,
-            isValidated
+            isValidated,
+            flow_id,
+            //intent
+            intent_action,
         };
     },
 

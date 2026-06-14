@@ -20,4 +20,9 @@ export async function wait(ms) {
 		setTimeout(resolve, ms);
 	});
 }
+
+// Get the action object from the actions array based on the action name
+export function getAction(action, actions) {
+  return actions.find(item => item.action === action);
+}
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

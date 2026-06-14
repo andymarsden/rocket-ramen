@@ -35,7 +35,9 @@ export const intent = {
                 payload,
                 content: content.content,
                 type: content.type,
-                role: content.role
+                role: content.role,
+                intent_action: content.intent_action,
+                flow_id: content.flow_id
                 //content: response
             };
         } catch (error) {
@@ -47,7 +49,9 @@ export const intent = {
                 },
                 intent: null,
                 payload: null,
-                content: null
+                content: null,
+                intent_action: null,
+                flow_id: null,
             };
         }
 

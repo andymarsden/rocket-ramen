@@ -11,8 +11,15 @@
 
 <main class="bg-background flex h-dvh min-h-0 flex-1 flex-col">
     <section class="relative flex min-h-0 flex-1 flex-col">
+
+Current Flow: {chatState.activeFlow ? chatState.activeFlow.id : "None"}
         <Messages/>
 
+        <!-- {#if chatState.activeFlow}
+            <div class="absolute top-0 left-0 right-0 z-10 bg-background p-4 shadow-md">
+                <p class="text-sm text-muted-foreground">Current Flow: {chatState.activeFlow.id}</p>
+            </div>
+        {/if} -->
         <ChatComposer />
     </section>
 </main>

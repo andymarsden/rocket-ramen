@@ -1,7 +1,7 @@
 import { chatState } from "$lib/chat";
 import { intent } from "$lib/chat/intent/engine.js";
 import { wait } from "$lib/utils.js";
-
+import { flow } from "$lib/chat/flows/engine.js";
 export const composer = {
     sendMessage: async function (userText) {
 
@@ -17,25 +17,29 @@ export const composer = {
         //detect intent
 
 
-        if(chatState.currentFlow) {
-            console.log("Current flow:", chatState.currentFlow);
+        if(chatState.activeFlow) {
+            console.log("Current flow:", chatState.activeFlow.id);
         }
 
 
         //Detect intent using the intent engine
         const get_intent = await intent.detect(userText);
 
-        console.log("Detected intent:", get_intent);
-
         let assistantResponse = "";
 
         if(!get_intent.success) {
+            //Do something here with failed intent detection, like sending a default message or logging the error
             assistantResponse = get_intent;
         }else{
-            assistantResponse = get_intent;
-        }
+            //Do something here with the detected intent, like executing the intent's action or sending a response
 
-   
+            assistantResponse = get_intent;
+
+            //is the intent to start a flow? if so, we need to start the flow and set the current flow in chatState
+            if(get_intent.intent_action === "start_flow") {
+                flow.start(get_intent.flow_id);
+            }
+        }
 
         await wait(600);
 
@@ -46,31 +50,13 @@ export const composer = {
     }
 };
 
-const flow = {
-    load(flow_id){
-        //get flow from server or local storage
-    },
-    start(flow_id,conversation_id){
-        chatState.currentFlow = flow_id;
-        
-        
-        
-        //UP TO HERE
-        
-        
-        
-        //chatState.addAssistantMessage(`Starting flow: ${flow_id}`);
-    },
-    process(){
-        //Next step is dictated by next step - if its not present then we move to the next index - if no next index then we end the flow
-},
-    save_step(){},
-    save_flow(){}
-};
+
 
 const conversation = {
     create(){},
-    load(conversation_id){}
+    load(conversation_id){},
+    save(){},
+    saveMessage(message_id){}
 }
 
 

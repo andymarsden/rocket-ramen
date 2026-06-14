@@ -125,6 +125,29 @@ export const rules = [
                 type: "query_lcc_dc",
             });
         }
-    }
+    },
+    {
+        id: "qrios_flow",
+         match(text) {
+            return text === "/qrios" || text.startsWith("/qrios ");
+        },
 
+        extract(text) {
+            return {
+                message: text.replace(/^\/qrios\s*/, "")
+            };
+        },
+        async run({ message: inputMessage }) {
+            return message.create({
+                role: "assistant",
+                content: {
+                    text: "Starting QRIOS flow..."
+                },
+                //actions: [{action: "start_flow", flow_id: "qrios_flow"}],
+                type: "start_flow",
+                flow_id: "qrios_flow",
+                intent_action: "start_flow"
+            });
+        }
+    }
 ];
