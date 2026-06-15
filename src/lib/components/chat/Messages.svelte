@@ -7,6 +7,7 @@
     import BiPie from "./messages/bi/bi-pie.svelte";
     import BiBar from "./messages/bi/bi-bar.svelte";
     import BiLine from "./messages/bi/bi-line.svelte";
+    import Test from "$lib/components/chat/messages/test.svelte";
 
     function getBiChartType(message) {
         const output = message?.content?.output;
@@ -47,6 +48,8 @@
                 <div>
                     {#if message.type === "thinking"}
                         <ThinkingSimple {message} />
+                        {:else if message.type === "test" && message.role === "assistant"}
+                            <Test {message} />
                     {:else if message.type === "query_qrios_bi" && message.role === "assistant"}
                         {#if isPieChartMessage(message)}
                             <BiPie {message} />

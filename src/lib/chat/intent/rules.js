@@ -36,6 +36,33 @@ async function postToN8nWorkflow(payload, url) {
 
 export const rules = [
     {
+        id: "test",
+
+        //permissions: ["staff"],
+
+        match(text) {
+            return text === "/test" || text.startsWith("/test ");
+        },
+
+        extract(text) {
+            //await wait(500);
+            return {
+                message: text.replace(/^\/test\s*/, "")
+            };
+        },
+
+        async run({ message: inputMessage }) {
+            //await wait(500);
+            //const m =;
+
+            return message.create({
+                role: "assistant",
+                content: { text: inputMessage || "Test mode active. Type /test followed by text to test it." },
+                type: "test",
+            });
+        }
+    },
+    {
         id: "echo",
 
         //permissions: ["staff"],
