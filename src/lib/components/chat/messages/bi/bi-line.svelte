@@ -10,6 +10,8 @@
 		Title,
 		Tooltip
 	} from "chart.js";
+import { buttonVariants } from "$lib/components/ui/button/index.js";
+import * as Sheet from "$lib/components/ui/sheet/index.js";
 
 	ChartJS.register(
 		LineController,
@@ -203,5 +205,21 @@
 		{:else}
 			<p class="mt-4 text-sm text-muted-foreground">No chart data available.</p>
 		{/if}
+
+<!-- <Sheet.Root>
+  <Sheet.Trigger class={buttonVariants({ variant: "outline" })}>Open</Sheet.Trigger>
+  <Sheet.Content>
+    <Sheet.Header>
+      <Sheet.Title>Are you sure absolutely sure?</Sheet.Title>
+      <Sheet.Description>
+        This action cannot be undone. This will permanently delete your account
+        and remove your data from our servers.
+      </Sheet.Description>
+    </Sheet.Header>
+  </Sheet.Content>
+</Sheet.Root> -->
+
+
+
 	</div>
 </article>
