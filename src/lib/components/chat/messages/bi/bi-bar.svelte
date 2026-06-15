@@ -14,6 +14,7 @@
 	ChartJS.register(BarController, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 	let chartCanvas = $state();
+	let sortMode = $state("value");
 
 	let { message } = $props();
 
@@ -64,19 +65,35 @@
 			.filter((row) => row.label.length > 0 && Number.isFinite(row.value));
 	});
 
-	const chartData = $derived.by(() => {
+	const sortedPoints = $derived.by(() => {
 		if (!points.length) {
+			return [];
+		}
+
+		const nextPoints = [...points];
+
+		if (sortMode === "alpha") {
+			nextPoints.sort((a, b) => a.label.localeCompare(b.label));
+			return nextPoints;
+		}
+
+		nextPoints.sort((a, b) => b.value - a.value);
+		return nextPoints;
+	});
+
+	const chartData = $derived.by(() => {
+		if (!sortedPoints.length) {
 			return null;
 		}
 
 		return {
-			labels: points.map((point) => point.label),
+			labels: sortedPoints.map((point) => point.label),
 			datasets: [
 				{
 					label: yAxis.label || "Total Visits",
-					data: points.map((point) => point.value),
+					data: sortedPoints.map((point) => point.value),
 					backgroundColor: "rgb(3, 88, 101)",
-					hoverBackgroundColor: '#047687',
+					hoverBackgroundColor: "#047687",
 					//borderColor: "rgba(2, 132, 199, 1)",
 					borderWidth: 1,
 					borderRadius: 6,
@@ -86,35 +103,49 @@
 		};
 	});
 
+	const truncateAxisLabel = (label) => {
+		const normalizedLabel = String(label ?? "");
+
+		if (normalizedLabel.length <= 10) {
+			return normalizedLabel;
+		}
+
+		return `${normalizedLabel.slice(0, 10)}...`;
+	};
+
 	const options = $derived.by(() => ({
 		responsive: true,
 		maintainAspectRatio: false,
 		plugins: {
 			legend: {
-            display: false
-        },
+				display: false
+			},
 			title: {
 				display: false
 			}
 		},
-		
+
 		scales: {
 			x: {
 				title: {
 					display: Boolean(xAxis.label),
 					text: xAxis.label || "Hub Attended"
+					
 				},
 				ticks: {
-					maxRotation: 45,
-					minRotation: 0
+					maxRotation: 90,
+					minRotation: 90,
+					callback: function (value) {
+						return truncateAxisLabel(this.getLabelForValue(value));
+					}
 				},
-				 grid: {
-					 color: '#F1F3F7'
-                //display: false
-            },
-			 border: {
-                display: false
-            }
+				grid: {
+					color: "#F1F3F7",
+					display: false
+				},
+				border: {
+					display: false
+				}
 			},
 			y: {
 				beginAtZero: true,
@@ -122,13 +153,14 @@
 					display: Boolean(yAxis.label),
 					text: yAxis.label || "Total Visits"
 				},
-				 grid: {
-					color: '#F1F3F7'
-                //display: false
-            },
-			 border: {
-                display: false
-            }
+				grid: {
+					color: "#F1F3F7",
+					   borderDash:  [1, 4]
+					//display: false
+				},
+				border: {
+					display: false
+				}
 			}
 		}
 	}));
@@ -159,10 +191,39 @@
 	</p>
 
 	<div class="rounded-lg border border-border/60 bg-background/70 p-4">
-		<p class="text-sm font-semibold text-foreground">{title}</p>
-		{#if description}
-			<p class="mt-1 text-xs text-muted-foreground">{description}</p>
-		{/if}
+		<div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+			<div>
+				<p class="text-sm font-semibold text-foreground">{title}</p>
+				{#if description}
+					<p class="mt-1 text-xs text-muted-foreground">{description}</p>
+				{/if}
+			</div>
+
+			<div class="flex items-center gap-2 sm:justify-end">
+				<button
+					type="button"
+					onclick={() => (sortMode = "value")}
+					class={`rounded-md border px-2.5 py-1 text-xs font-medium transition-colors ${
+						sortMode === "value"
+							? "border-foreground/40 bg-foreground text-background"
+							: "border-border/70 bg-background text-foreground hover:bg-muted"
+					}`}
+				>
+					Sort by value
+				</button>
+				<button
+					type="button"
+					onclick={() => (sortMode = "alpha")}
+					class={`rounded-md border px-2.5 py-1 text-xs font-medium transition-colors ${
+						sortMode === "alpha"
+							? "border-foreground/40 bg-foreground text-background"
+							: "border-border/70 bg-background text-foreground hover:bg-muted"
+					}`}
+				>
+					Sort A-Z
+				</button>
+			</div>
+		</div>
 
 		{#if chartData}
 			<div class="mt-4 h-80">
