@@ -1,4 +1,6 @@
 <script>
+	import { onDestroy } from "svelte";
+	import { Save } from "@lucide/svelte";
 	import {
 		CategoryScale,
 		Chart as ChartJS,
@@ -10,8 +12,8 @@
 		Title,
 		Tooltip
 	} from "chart.js";
-import { buttonVariants } from "$lib/components/ui/button/index.js";
-import * as Sheet from "$lib/components/ui/sheet/index.js";
+	import { buttonVariants } from "$lib/components/ui/button/index.js";
+	import * as Sheet from "$lib/components/ui/sheet/index.js";
 
 	ChartJS.register(
 		LineController,
@@ -29,7 +31,18 @@ import * as Sheet from "$lib/components/ui/sheet/index.js";
 		year: "numeric"
 	});
 
+	const dashboardOptions = [
+		{ value: "executive-overview", label: "Executive Overview" },
+		{ value: "hub-performance", label: "Hub Performance" },
+		{ value: "monthly-service-review", label: "Monthly Service Review" }
+	];
+
 	let chartCanvas = $state();
+	let isSaveSheetOpen = $state(false);
+	let selectedDashboard = $state("");
+	let toastMessage = $state("");
+	let isToastVisible = $state(false);
+	let toastTimeout;
 
 	let { message } = $props();
 
@@ -169,6 +182,31 @@ import * as Sheet from "$lib/components/ui/sheet/index.js";
 		}
 	}));
 
+	const showToast = (message) => {
+		toastMessage = message;
+		isToastVisible = true;
+
+		clearTimeout(toastTimeout);
+		toastTimeout = setTimeout(() => {
+			isToastVisible = false;
+		}, 2500);
+	};
+
+	const saveToDashboard = () => {
+		if (!selectedDashboard) {
+			return;
+		}
+
+		const selectedOption = dashboardOptions.find((dashboard) => dashboard.value === selectedDashboard);
+
+		isSaveSheetOpen = false;
+		showToast(`Saved to ${selectedOption?.label ?? "dashboard"}`);
+	};
+
+	onDestroy(() => {
+		clearTimeout(toastTimeout);
+	});
+
 	$effect(() => {
 		const data = chartData;
 		const chartOptions = options;
@@ -193,10 +231,74 @@ import * as Sheet from "$lib/components/ui/sheet/index.js";
 	<p class="mb-3 text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">Assistant</p>
 
 	<div class="rounded-lg border border-border/60 bg-background/70 p-4">
-		<p class="text-sm font-semibold text-foreground">{title}</p>
-		{#if description}
-			<p class="mt-1 text-xs text-muted-foreground">{description}</p>
+		{#if isToastVisible}
+			<div
+				class="mb-4 flex items-center justify-between rounded-md border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-900"
+				role="status"
+				aria-live="polite"
+			>
+				<span>{toastMessage}</span>
+				<button
+					type="button"
+					class="ml-3 text-xs font-medium text-emerald-900/70 hover:text-emerald-900"
+					onclick={() => (isToastVisible = false)}
+				>
+					Dismiss
+				</button>
+			</div>
 		{/if}
+
+		<div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+			<div>
+				<p class="text-sm font-semibold text-foreground">{title}</p>
+				{#if description}
+					<p class="mt-1 text-xs text-muted-foreground">{description}</p>
+				{/if}
+			</div>
+
+			<Sheet.Root bind:open={isSaveSheetOpen}>
+				<Sheet.Trigger class={`${buttonVariants({ variant: "outline" })} inline-flex items-center gap-2`}>
+					<Save class="size-4" />
+					<span>Save to dashboard</span>
+				</Sheet.Trigger>
+				<Sheet.Content side="right" class="w-full sm:max-w-md">
+					<Sheet.Header>
+						<Sheet.Title>Save to dashboard</Sheet.Title>
+						<Sheet.Description>
+							Choose a dashboard to save this chart to.
+						</Sheet.Description>
+					</Sheet.Header>
+
+					<div class="px-4 py-6">
+						<label class="mb-2 block text-sm font-medium text-foreground" for="dashboard-select">
+							Dashboard
+						</label>
+						<select
+							id="dashboard-select"
+							bind:value={selectedDashboard}
+							class="border-input bg-background ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring flex h-10 w-full rounded-md border px-3 py-2 text-sm focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden"
+						>
+							<option value="">Select a dashboard</option>
+							{#each dashboardOptions as dashboard}
+								<option value={dashboard.value}>{dashboard.label}</option>
+							{/each}
+						</select>
+					</div>
+
+					<Sheet.Footer>
+						<Sheet.Close class={buttonVariants({ variant: "outline" })}>Cancel</Sheet.Close>
+						<button
+							type="button"
+							class={buttonVariants()}
+							disabled={!selectedDashboard}
+							onclick={saveToDashboard}
+						>
+							Save
+						</button>
+					</Sheet.Footer>
+				</Sheet.Content>
+			</Sheet.Root>
+		</div>
 
 		{#if chartData}
 			<div class="mt-4 h-80">
@@ -205,21 +307,5 @@ import * as Sheet from "$lib/components/ui/sheet/index.js";
 		{:else}
 			<p class="mt-4 text-sm text-muted-foreground">No chart data available.</p>
 		{/if}
-
-<!-- <Sheet.Root>
-  <Sheet.Trigger class={buttonVariants({ variant: "outline" })}>Open</Sheet.Trigger>
-  <Sheet.Content>
-    <Sheet.Header>
-      <Sheet.Title>Are you sure absolutely sure?</Sheet.Title>
-      <Sheet.Description>
-        This action cannot be undone. This will permanently delete your account
-        and remove your data from our servers.
-      </Sheet.Description>
-    </Sheet.Header>
-  </Sheet.Content>
-</Sheet.Root> -->
-
-
-
 	</div>
 </article>
