@@ -6,6 +6,7 @@
     import BiNumber from "./messages/bi/BiNumber.svelte";
     import BiPie from "./messages/bi/bi-pie.svelte";
     import BiBar from "./messages/bi/bi-bar.svelte";
+    import BiLine from "./messages/bi/bi-line.svelte";
 
     function getBiChartType(message) {
         const output = message?.content?.output;
@@ -30,6 +31,10 @@
     function isBarChartMessage(message) {
         return getBiChartType(message) === "bar_chart";
     }
+
+    function isLineChartMessage(message) {
+        return getBiChartType(message) === "line_chart";
+    }
 </script>
 
 <div class="min-h-0 flex-1 overflow-y-auto scroll-smooth">
@@ -47,6 +52,8 @@
                             <BiPie {message} />
                         {:else if isBarChartMessage(message)}
                             <BiBar {message} />
+                        {:else if isLineChartMessage(message)}
+                            <BiLine {message} />
                         {:else}
                             <BiNumber {message} />
                         {/if}
