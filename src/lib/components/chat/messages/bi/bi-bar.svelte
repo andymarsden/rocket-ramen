@@ -1,6 +1,6 @@
 <script>
-	import { Bar } from "svelte-chartjs";
 	import {
+		BarController,
 		BarElement,
 		CategoryScale,
 		Chart as ChartJS,
@@ -10,7 +10,10 @@
 		Tooltip
 	} from "chart.js";
 
-	ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+
+	ChartJS.register(BarController, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+
+	let chartCanvas = $state();
 
 	let { message } = $props();
 
@@ -72,8 +75,9 @@
 				{
 					label: yAxis.label || "Total Visits",
 					data: points.map((point) => point.value),
-					backgroundColor: "rgba(14, 165, 233, 0.75)",
-					borderColor: "rgba(2, 132, 199, 1)",
+					backgroundColor: "rgb(3, 88, 101)",
+					hoverBackgroundColor: '#047687',
+					//borderColor: "rgba(2, 132, 199, 1)",
 					borderWidth: 1,
 					borderRadius: 6,
 					maxBarThickness: 36
@@ -87,12 +91,13 @@
 		maintainAspectRatio: false,
 		plugins: {
 			legend: {
-				position: "bottom"
-			},
+            display: false
+        },
 			title: {
 				display: false
 			}
 		},
+		
 		scales: {
 			x: {
 				title: {
@@ -102,17 +107,50 @@
 				ticks: {
 					maxRotation: 45,
 					minRotation: 0
-				}
+				},
+				 grid: {
+					 color: '#F1F3F7'
+                //display: false
+            },
+			 border: {
+                display: false
+            }
 			},
 			y: {
 				beginAtZero: true,
 				title: {
 					display: Boolean(yAxis.label),
 					text: yAxis.label || "Total Visits"
-				}
+				},
+				 grid: {
+					color: '#F1F3F7'
+                //display: false
+            },
+			 border: {
+                display: false
+            }
 			}
 		}
 	}));
+
+	$effect(() => {
+		const data = chartData;
+		const chartOptions = options;
+
+		if (!chartCanvas || !data) {
+			return;
+		}
+
+		const chart = new ChartJS(chartCanvas, {
+			type: "bar",
+			data,
+			options: chartOptions
+		});
+
+		return () => {
+			chart.destroy();
+		};
+	});
 </script>
 
 <article>
@@ -128,7 +166,7 @@
 
 		{#if chartData}
 			<div class="mt-4 h-80">
-				<Bar data={chartData} options={options} />
+				<canvas bind:this={chartCanvas}></canvas>
 			</div>
 		{:else}
 			<p class="mt-4 text-sm text-muted-foreground">No chart data available.</p>
