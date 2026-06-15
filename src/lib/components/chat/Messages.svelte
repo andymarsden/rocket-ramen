@@ -70,7 +70,7 @@
 <!--  -->
 
 <style>
-   .fancy {
+   /* .fancy {
         position: relative;
         overflow: hidden;
         border: 2px solid rgba(255, 251, 20, 0.95);
@@ -79,7 +79,7 @@
             0 0 24px rgba(255, 251, 20, 0.45),
             inset 0 0 18px rgba(255, 251, 20, 0.22);
         padding: 1rem;
-    }
+    } */
 
     /* .fancy::before {
         content: "";

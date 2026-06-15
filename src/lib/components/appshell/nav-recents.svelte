@@ -13,7 +13,7 @@
     <Sidebar.Menu>
       <Sidebar.MenuItem>
                 <Sidebar.MenuButton>
-                        <a href="#" class="flex items-center gap-2">
+                        <a href="/.." class="flex items-center gap-2">
                             <PinIcon />
                             <span>Todays Work</span>
                         </a>

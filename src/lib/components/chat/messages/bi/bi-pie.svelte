@@ -49,16 +49,28 @@
 			.filter((row) => row.label.length > 0 && Number.isFinite(row.value));
 	});
 
+	const totalValue = $derived(points.reduce((sum, point) => sum + point.value, 0));
+
+	const pointsWithPercentage = $derived.by(() => {
+		if (totalValue === 0) {
+			return points;
+		}
+		return points.map((point) => ({
+			...point,
+			percentage: ((point.value / totalValue) * 100).toFixed(1)
+		}));
+	});
+
 	const chartData = $derived.by(() => {
-		if (!points.length) {
+		if (!pointsWithPercentage.length) {
 			return null;
 		}
 
 		return {
-			labels: points.map((point) => point.label),
+			labels: pointsWithPercentage.map((point) => `${point.label} (${point.percentage}%)`),
 			datasets: [
 				{
-					data: points.map((point) => point.value),
+					data: pointsWithPercentage.map((point) => point.value),
 					backgroundColor: ["#14532d", "#0ea5e9", "#f59e0b", "#ef4444", "#8b5cf6", "#14b8a6"],
 					borderColor: "rgba(255, 255, 255, 0.9)",
 					borderWidth: 2
@@ -66,6 +78,7 @@
 			]
 		};
 	});
+
 
 	const options = {
 		responsive: true,
