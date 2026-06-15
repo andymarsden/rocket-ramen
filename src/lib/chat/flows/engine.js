@@ -14,11 +14,9 @@ export const flow = {
         const flowModule = await loadModule();
         console.log("Loaded flow module:", flowModule);
         return flowModule.default ?? flowModule;
-
-
-
-
     },
+
+    
     async start(flow_id,conversation_id){
         try {
             const loadedFlow = await flow.load(flow_id);

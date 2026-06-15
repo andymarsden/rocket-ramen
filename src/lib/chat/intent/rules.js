@@ -1,7 +1,7 @@
 const N8N_WORKFLOW_URL = import.meta.env?.VITE_N8N_WEBHOOK_URL || "https://infojam.app.n8n.cloud/webhook/7486e492-de09-4764-bea5-8e63dbfe8deb";
 
 const n8n_workflows = {
-    tts: "https://infojam.app.n8n.cloud/webhook/7486e492-de09-4764-bea5-8e63dbfe8deb",
+    tts: "https://infojam.app.n8n.cloud/webhook/ea6648bb-0f27-424e-8271-e67a16f4f1ac",
     lcc_dc: "https://infojam.app.n8n.cloud/webhook/1fdfa3a1-4b77-4d27-95a5-d82733f4cfed"
 };
 

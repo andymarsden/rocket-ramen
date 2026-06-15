@@ -80,11 +80,3 @@ const conversation = {
     save(){},
     saveMessage(message_id){}
 }
-
-
-
-// export function sendMessage(text) {
-//     //const thinkingMessage = chatState.addThinkingMessage();
-//     //chatState.addAssistantMessage(`You said: ${text}`);
-  
-// }

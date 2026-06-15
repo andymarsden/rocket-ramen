@@ -4,6 +4,21 @@
     import AssistantSimple from "./messages/AssistantSimple.svelte";
     import ThinkingSimple from "./messages/ThinkingSimple.svelte";
     import BiNumber from "./messages/bi/BiNumber.svelte";
+    import BiPie from "./messages/bi/bi-pie.svelte";
+
+    function isPieChartMessage(message) {
+        const output = message?.content?.output;
+        const dataOutput = message?.content?.data?.output;
+        const firstArrayOutput = Array.isArray(message?.content?.data)
+            ? message.content.data[0]?.output
+            : null;
+
+        return (
+            output?.type === "pie_chart" ||
+            dataOutput?.type === "pie_chart" ||
+            firstArrayOutput?.type === "pie_chart"
+        );
+    }
 </script>
 
 <div class="min-h-0 flex-1 overflow-y-auto scroll-smooth">
@@ -17,7 +32,11 @@
                     {#if message.type === "thinking"}
                         <ThinkingSimple {message} />
                     {:else if message.type === "query_qrios_bi" && message.role === "assistant"}
-                        <BiNumber {message} />
+                        {#if isPieChartMessage(message)}
+                            <BiPie {message} />
+                        {:else}
+                            <BiNumber {message} />
+                        {/if}
                     {:else if message.role === "user"}
                         <UserSimple {message} />
                     {:else}
