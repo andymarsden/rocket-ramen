@@ -12,8 +12,20 @@
 	import * as Accordion from "$lib/components/ui/accordion/index.js";
 	import { Badge } from "$lib/components/ui/badge/index.js";
 
+
+	import { composer } from "$lib/chat/composer.js";
+
+	import { marked } from "marked";
+
+	
 	function toArray(value) {
 		return Array.isArray(value) ? value : [];
+	}
+
+
+	function sendUserMessage(text){
+		console.log('sending user message:', text);
+		composer.sendMessage(text);
 	}
 
 	const catalogMessage = $derived.by(() => {
@@ -95,7 +107,7 @@
 										{#if asset.has_agent === true}
 											<Badge
 												variant="outline"
-												class="border-green-300 bg-green-100 text-green-900 glass-border-badge"
+												class="border-green-300 bg-green-100 text-black glass-border-badge"
 											>
 												Agent
 											</Badge>
@@ -137,20 +149,21 @@
 											class={`${buttonVariants({ variant: "outline" })} inline-flex items-center gap-2`}
 										>
 											<SquareCodeIcon class="size-4" />
-											<span>Metdata</span>
+											<span>Metadata</span>
 										</Sheet.Trigger>
 										<Sheet.Content>
 											<Sheet.Header>
 												<Sheet.Title
-													>Are you sure absolutely
-													sure?</Sheet.Title
+													>{asset.asset_name}</Sheet.Title
 												>
 												<Sheet.Description>
-													This action cannot be
-													undone. This will
-													permanently delete your
-													account and remove your data
-													from our servers.
+												
+													{#if asset.meta_data}
+													<div class="assistant-markdown wrap-break-word markdown-body">
+		{@html marked.parse(asset.meta_data || "")}
+	</div>
+														
+													{/if}
 												</Sheet.Description>
 											</Sheet.Header>
 										</Sheet.Content>
@@ -158,6 +171,7 @@
 									{#if asset.has_agent === true}
 										<Button
 											variant="outline"
+											onclick={() => sendUserMessage(`/cls analytics ${asset.asset_name}`)}
 											class="glass-border-button"
 											><Bot class="size-4" /></Button
 										>

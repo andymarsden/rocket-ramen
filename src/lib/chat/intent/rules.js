@@ -124,7 +124,32 @@ export const rules = [
 
         }
     },
+{
+        id: "cls_analytics_flow",
 
+        match(text) {
+            return text === "/cls analytics" || text.startsWith("/cls analytics ");
+        },
+
+        extract(text) {
+            return {
+                message: text.replace(/^\/cls analytics\s*/, "")
+            };
+        },
+
+        async run({ message: inputMessage }) {
+            return message.create({
+                role: "assistant",
+                content: {
+                    text: "Starting CLS Analytics..."
+                },
+                //actions: [{action: "start_flow", flow_id: "cls_analytics_flow"}],
+                type: "start_flow",
+                flow_id: "cls_analytics_flow",
+                intent_action: "start_flow"
+            });
+        }
+    },
     {
         id: "query_dc",
 

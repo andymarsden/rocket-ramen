@@ -1,0 +1,18 @@
+{
+  "id": "cls_analytics_flow",
+  "steps": [
+    {
+      "index": 0,
+      "id": "cls_analytics_opening",
+      "name": "Start CLS Analytics Flow",
+      "question": "Hi im your CLS analysis asssistant, what would you like to know?\n\n Ive given you some suggestions to get started or just ask me anything.",
+      "options": [
+        {"text": "Gender Breakdown", "isSelected": false, "value":"/query breakdown by gender"},
+        {"text": "Visits by date", "isSelected": false, "value":"/query total visits by date"}
+      ],
+      "section": "details",
+      "isSectionStart": true,
+      "default": "Today"
+    }
+  ]
+}
