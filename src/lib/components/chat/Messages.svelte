@@ -7,6 +7,7 @@
     import BiPie from "./messages/bi/bi-pie.svelte";
     import BiBar from "./messages/bi/bi-bar.svelte";
     import BiLine from "./messages/bi/bi-line.svelte";
+    import BiText from "./messages/bi/bi-text.svelte";
     import Test from "$lib/components/chat/messages/test.svelte";
     import DataCatalog from "$lib/components/chat/messages/data-catalog.svelte";
 
@@ -39,6 +40,10 @@
     function isLineChartMessage(message) {
         return getBiChartType(message) === "line_chart";
     }
+
+    function isTextCardMessage(message) {
+        return getBiChartType(message) === "text";
+    }
 </script>
 
 <div class="min-h-0 flex-1 overflow-y-auto scroll-smooth">
@@ -65,6 +70,8 @@
                             <BiBar {message} />
                         {:else if isLineChartMessage(message)}
                             <BiLine {message} />
+                        {:else if isTextCardMessage(message)}
+                            <BiText {message} />
                         {:else}
                             <BiNumber {message} />
                         {/if}

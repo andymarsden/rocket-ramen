@@ -228,7 +228,7 @@
 </script>
 
 <article>
-	<p class="mb-3 text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">Assistant</p>
+	<p class="mb-3 text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">LCC DATA Assistant</p>
 
 	<div class="rounded-lg border border-border/60 bg-background/70 p-4">
 		{#if isToastVisible}

@@ -52,7 +52,7 @@
 
 <article class="text-foreground text-[15px] leading-7">
 	<p
-		class="text-muted-foreground mb-2 text-xs font-medium uppercase tracking-wide"
+		class="mb-3 text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground"
 	>
 		Assistant
 	</p>

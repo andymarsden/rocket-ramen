@@ -1,4 +1,5 @@
 <script>
+	import { Table2 } from "@lucide/svelte";
 	import { Pie } from "svelte-chartjs";
 	import { ArcElement, Chart as ChartJS, Legend, Tooltip } from "chart.js";
 
@@ -92,13 +93,28 @@
 </script>
 
 <article>
-	<p class="mb-3 text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">Assistant</p>
+	<p class="mb-3 text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">LCC DATA Assistant
+		
+
+	</p>
 
 	<div class="rounded-lg border border-border/60 bg-background/70 p-4">
-		<p class="text-sm font-semibold text-foreground">{title}</p>
-		{#if description}
-			<p class="mt-1 text-xs text-muted-foreground">{description}</p>
-		{/if}
+		<div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+			<div>
+				<p class="text-sm font-semibold text-foreground">{title}</p>
+				{#if description}
+					<p class="mt-1 text-xs text-muted-foreground">{description}</p>
+				{/if}
+			</div>
+
+			<button
+				type="button"
+				class="inline-flex items-center gap-2 rounded-md border border-border/70 bg-background px-2.5 py-1 text-xs font-medium text-foreground transition-colors hover:bg-muted sm:justify-end"
+			>
+				<Table2 class="size-4" />
+				<span>View data</span>
+			</button>
+		</div>
 
 		{#if chartData}
 			<div class="mt-4 h-72">
