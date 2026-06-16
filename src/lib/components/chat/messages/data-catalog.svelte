@@ -89,14 +89,29 @@
 									<strong
 										>[{index + 1}] {asset.asset_name}</strong
 									>
-									{#if asset.asset_type}
-										<Badge
-											variant="outline"
-											class={badgeClass(asset.asset_type)}
-										>
-											{asset.asset_type}
-										</Badge>
-									{/if}
+									<span
+										class="ml-auto flex items-center gap-2"
+									>
+										{#if asset.has_agent === true}
+											<Badge
+												variant="outline"
+												class="border-green-300 bg-green-100 text-green-900 glass-border-badge"
+											>
+												Agent
+											</Badge>
+										{/if}
+
+										{#if asset.asset_type}
+											<Badge
+												variant="outline"
+												class={badgeClass(
+													asset.asset_type,
+												)}
+											>
+												{asset.asset_type}
+											</Badge>
+										{/if}
+									</span>
 								</span>
 							</Accordion.Trigger>
 							<Accordion.Content
@@ -110,12 +125,12 @@
 											class="size-4"
 										/>Contact Owner</Button
 									>
+
 									<Button variant="outline"
 										><FileLineChartIcon
 											class="size-4"
 										/>View Asset</Button
 									>
-									
 
 									<Sheet.Root>
 										<Sheet.Trigger
@@ -140,12 +155,13 @@
 											</Sheet.Header>
 										</Sheet.Content>
 									</Sheet.Root>
-
-									<Button
-										variant="outline"
-										class="glass-border-button"
-										><Bot class="size-4" /></Button
-									>
+									{#if asset.has_agent === true}
+										<Button
+											variant="outline"
+											class="glass-border-button"
+											><Bot class="size-4" /></Button
+										>
+									{/if}
 								</div>
 
 								{#if asset.short_description}
@@ -263,6 +279,39 @@
 </article>
 
 <style>
+	:global(.glass-border-badge) {
+		position: relative;
+		border: 2px solid transparent;
+		background:
+			linear-gradient(
+					var(--glass-surface, #ffffff),
+					var(--glass-surface, #ffffff)
+				)
+				padding-box,
+			linear-gradient(
+					122deg,
+					#ff00aa,
+					#ff5e5e,
+					#ffdd00,
+					#ff66cc,
+					#ffee55,
+					#ff00aa
+				)
+				border-box;
+		background-size:
+			100% 100%,
+			400% 400%;
+		background-position:
+			0 0,
+			0% 50%;
+		backdrop-filter: blur(14px);
+		animation: borderMove 16s ease-in-out infinite;
+	}
+
+	:global(.dark) {
+		--glass-surface: #13151b;
+	}
+
 	:global(.assistant-markdown.markdown-body) {
 		background-color: hsl(var(--background));
 		color: hsl(var(--foreground));
@@ -271,5 +320,23 @@
 	:global(.dark .assistant-markdown.markdown-body) {
 		background-color: hsl(var(--background));
 		color: hsl(var(--foreground));
+	}
+
+	@keyframes borderMove {
+		0% {
+			background-position:
+				0 0,
+				0% 50%;
+		}
+		50% {
+			background-position:
+				0 0,
+				100% 50%;
+		}
+		100% {
+			background-position:
+				0 0,
+				0% 50%;
+		}
 	}
 </style>
