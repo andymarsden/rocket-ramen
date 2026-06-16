@@ -1,9 +1,13 @@
 <script>
 	let { message } = $props();
 	import Button from "$lib/components/ui/button/button.svelte";
+	import { buttonVariants } from "$lib/components/ui/button/index.js";
 	import MessageSquareTextIcon from "@lucide/svelte/icons/message-square-text";
 	import FileLineChartIcon from "@lucide/svelte/icons/file-line-chart";
+	import SquareCodeIcon from "@lucide/svelte/icons/square-code";
 	import Bot from "@lucide/svelte/icons/bot";
+
+	import * as Sheet from "$lib/components/ui/sheet/index.js";
 
 	import * as Accordion from "$lib/components/ui/accordion/index.js";
 	import { Badge } from "$lib/components/ui/badge/index.js";
@@ -37,13 +41,13 @@
 	});
 
 	const recommendedAssets = $derived(
-		toArray(catalogMessage?.recommended_assets)
+		toArray(catalogMessage?.recommended_assets),
 	);
 	const relatedAssets = $derived(
-		toArray(catalogMessage?.assets_you_maybe_interested_in)
+		toArray(catalogMessage?.assets_you_maybe_interested_in),
 	);
 	const followUpQuestions = $derived(
-		toArray(catalogMessage?.follow_up_questions)
+		toArray(catalogMessage?.follow_up_questions),
 	);
 
 	function badgeClass(assetType) {
@@ -62,7 +66,9 @@
 	>
 		LCC DATA Assistant
 	</p>
-	<div class="assistant-markdown wrap-break-word markdown-body pt-4 pb-4 mb-4">
+	<div
+		class="assistant-markdown wrap-break-word markdown-body pt-4 pb-4 mb-4"
+	>
 		{#if catalogMessage}
 			{#if catalogMessage.initial_comment}
 				<p>{catalogMessage.initial_comment}</p>
@@ -80,7 +86,9 @@
 						<Accordion.Item value={`recommended-${index}`}>
 							<Accordion.Trigger>
 								<span class="flex flex-1 items-center gap-2">
-									<strong>[{index + 1}] {asset.asset_name}</strong>
+									<strong
+										>[{index + 1}] {asset.asset_name}</strong
+									>
 									{#if asset.asset_type}
 										<Badge
 											variant="outline"
@@ -91,13 +99,54 @@
 									{/if}
 								</span>
 							</Accordion.Trigger>
-							<Accordion.Content class="flex flex-col gap-4 text-balance mt-2">
+							<Accordion.Content
+								class="flex flex-col gap-4 text-balance mt-2"
+							>
+								<div class="flex items-center gap-2">
+									<Button
+										class="transition-colors"
+										variant="outline"
+										><MessageSquareTextIcon
+											class="size-4"
+										/>Contact Owner</Button
+									>
+									<Button variant="outline"
+										><FileLineChartIcon
+											class="size-4"
+										/>View Asset</Button
+									>
+									
 
-									<div class="flex items-center gap-2">
-						<Button variant="outline"><MessageSquareTextIcon class="size-4" />Contact Owner</Button>
-						<Button variant="outline"><FileLineChartIcon class="size-4" />View Asset</Button>
-						<Button variant="outline" class="glass-border-button"><Bot class="size-4" /></Button>
-					</div>
+									<Sheet.Root>
+										<Sheet.Trigger
+											class={`${buttonVariants({ variant: "outline" })} inline-flex items-center gap-2`}
+										>
+											<SquareCodeIcon class="size-4" />
+											<span>Metdata</span>
+										</Sheet.Trigger>
+										<Sheet.Content>
+											<Sheet.Header>
+												<Sheet.Title
+													>Are you sure absolutely
+													sure?</Sheet.Title
+												>
+												<Sheet.Description>
+													This action cannot be
+													undone. This will
+													permanently delete your
+													account and remove your data
+													from our servers.
+												</Sheet.Description>
+											</Sheet.Header>
+										</Sheet.Content>
+									</Sheet.Root>
+
+									<Button
+										variant="outline"
+										class="glass-border-button"
+										><Bot class="size-4" /></Button
+									>
+								</div>
 
 								{#if asset.short_description}
 									<p>{asset.short_description}</p>
@@ -105,10 +154,16 @@
 
 								<ul class="list-none! p-0! m-0!">
 									{#if asset.service_area}
-										<li><strong>Service Area:</strong> {asset.service_area}</li>
+										<li>
+											<strong>Service Area:</strong>
+											{asset.service_area}
+										</li>
 									{/if}
 									{#if asset.owner}
-										<li><strong>Owner:</strong> {asset.owner}</li>
+										<li>
+											<strong>Owner:</strong>
+											{asset.owner}
+										</li>
 									{/if}
 								</ul>
 
@@ -130,7 +185,7 @@
 									</div>
 								{/if}
 
-								<div class="flex flex-wrap gap-2">
+								<!-- <div class="flex flex-wrap gap-2">
 									{#if asset.link_to_asset}
 										<a
 											href={asset.link_to_asset}
@@ -151,11 +206,8 @@
 											View metadata
 										</a>
 									{/if}
-								</div>
+								</div> -->
 							</Accordion.Content>
-
-
-
 						</Accordion.Item>
 					{/each}
 				</Accordion.Root>
@@ -169,13 +221,20 @@
 						<Accordion.Item value={`related-${index}`}>
 							<Accordion.Trigger>
 								<span class="flex flex-1 items-center gap-2">
-									<strong>[{String.fromCharCode(97 + index)}] {asset.asset_name}</strong>
+									<strong
+										>[{String.fromCharCode(97 + index)}] {asset.asset_name}</strong
+									>
 								</span>
 							</Accordion.Trigger>
-							<Accordion.Content class="flex flex-col gap-4 text-balance mt-2">
+							<Accordion.Content
+								class="flex flex-col gap-4 text-balance mt-2"
+							>
 								<ul class="list-none! p-0! m-0!">
 									{#if asset.owner}
-										<li><strong>Owner:</strong> {asset.owner}</li>
+										<li>
+											<strong>Owner:</strong>
+											{asset.owner}
+										</li>
 									{/if}
 								</ul>
 
@@ -202,7 +261,6 @@
 		{/if}
 	</div>
 </article>
-
 
 <style>
 	:global(.assistant-markdown.markdown-body) {

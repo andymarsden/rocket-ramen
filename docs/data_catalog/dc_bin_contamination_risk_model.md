@@ -10,6 +10,7 @@
 **Status:** Pilot
 **Last Reviewed:** 2026-05-21
 **Link:** https://models.council.gov.uk/waste/contamination-risk
+**HasAgent** true
 
 ## Description
 
