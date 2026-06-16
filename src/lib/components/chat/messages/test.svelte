@@ -11,7 +11,7 @@
 	<p
 		class="text-muted-foreground mb-2 text-xs font-medium uppercase tracking-wide"
 	>
-		Assistant
+		LCC DATA Assistant
 	</p>
 	<div class="assistant-markdown wrap-break-word markdown-body pt-4 pb-4 mb-4">
 
@@ -57,6 +57,11 @@
 					</span>
 				</Accordion.Trigger>
 				<Accordion.Content class="flex flex-col gap-4 text-balance mt-2">
+									<div class="flex items-center gap-2">
+						<Button variant="outline"><MessageSquareTextIcon class="size-4" />Contact Owner</Button>
+						<Button variant="outline"><FileLineChartIcon class="size-4" />View Report</Button>
+						<Button variant="outline" class="glass-border-button"><Bot class="size-4" /></Button>
+					</div>
 					<p>
 						Dataset of pothole defect reports, inspection outcomes, repair actions and completion dates.
 
@@ -76,11 +81,7 @@
 						<li>Are urgent defects repaired within target time?</li>
 						<li>What maintenance backlogs are emerging?</li>
 					</ul>
-					<div class="flex items-center gap-2">
-						<Button variant="outline"><MessageSquareTextIcon class="size-4" />Contact Owner</Button>
-						<Button variant="outline"><FileLineChartIcon class="size-4" />View Report</Button>
-						<Button variant="outline" class="glass-border-button"><Bot class="size-4" /></Button>
-					</div>
+
 				</Accordion.Content>
 			</Accordion.Item>
 			<Accordion.Item value="item-3">
@@ -184,7 +185,7 @@
 		position: relative;
 		padding-left: 0.625rem;
 		padding-right: 0.625rem;
-		border: 1px solid transparent;
+		border: 2px solid transparent;
 		border-radius: 8px;
 
 		color: var(--glass-text);

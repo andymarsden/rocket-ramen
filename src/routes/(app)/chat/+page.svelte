@@ -7,13 +7,13 @@
     import { chatState } from "$lib/chat";
 </script>
 
-<AppHeader crumbs={[{ label: "Sandbox", href: "/app" }]} currentPage="Qrios" />
+<AppHeader crumbs={[{ label: "STAT", href: "/app" }]} currentPage="Chat" />
 
 <main class="bg-background flex h-dvh min-h-0 flex-1 flex-col">
     <section class="relative flex min-h-0 flex-1 flex-col">
 
-Current Flow: {chatState.activeFlow ? chatState.activeFlow.id : "None"}
-Active Message ID: {chatState.activeMessageId ? chatState.activeMessageId : "None"}
+<!-- Current Flow: {chatState.activeFlow ? chatState.activeFlow.id : "None"}
+Active Message ID: {chatState.activeMessageId ? chatState.activeMessageId : "None"} -->
         <Messages/>
 
         <!-- {#if chatState.activeFlow}

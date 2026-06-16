@@ -8,6 +8,9 @@
     import BiBar from "./messages/bi/bi-bar.svelte";
     import BiLine from "./messages/bi/bi-line.svelte";
     import Test from "$lib/components/chat/messages/test.svelte";
+    import DataCatalog from "$lib/components/chat/messages/data-catalog.svelte";
+
+
 
     function getBiChartType(message) {
         const output = message?.content?.output;
@@ -48,6 +51,11 @@
                 <div>
                     {#if message.type === "thinking"}
                         <ThinkingSimple {message} />
+ {:else if message.type === "query_lcc_dc"}
+
+    <DataCatalog {message} />    
+
+
                         {:else if message.type === "test" && message.role === "assistant"}
                             <Test {message} />
                     {:else if message.type === "query_qrios_bi" && message.role === "assistant"}
@@ -64,6 +72,8 @@
                         <UserSimple {message} />
                     {:else}
                         <AssistantSimple {message} />
+
+
                     {/if}
                 </div>
             {/each}
