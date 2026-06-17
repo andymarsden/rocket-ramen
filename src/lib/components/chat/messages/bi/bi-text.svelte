@@ -78,45 +78,45 @@
 
 		<div class="mt-1 flex items-start justify-between gap-3">
 			<p class="pr-2 text-sm font-semibold text-foreground">{title}</p>
-
-			<div class="flex shrink-0 items-center justify-end gap-2">
-				<button
-					type="button"
-					class="inline-flex items-center gap-2 rounded-md border border-border/70 bg-background px-2.5 py-1 text-xs font-medium text-foreground transition-colors hover:bg-muted"
-				>
-					<Table2 class="size-4" />
-					<span>View data</span>
-				</button>
-
-				<Tooltip.Root>
-					<Tooltip.Trigger>
-						{#snippet child({ props })}
-							<button
-								type="button"
-								class="inline-flex items-center gap-1 rounded-md border border-border/70 bg-background px-2 py-1 text-xs font-medium text-foreground transition-colors hover:bg-muted"
-								aria-label="View assumptions"
-								{...props}
-							>
-								<CircleHelp class="size-4" />
-								<span>Assumptions</span>
-							</button>
-						{/snippet}
-					</Tooltip.Trigger>
-					<Tooltip.Content side="top" align="end" class="max-w-sm">
-						{#if assumptions.length}
-							<ul class="list-disc pl-4">
-								{#each assumptions as assumption}
-									<li>{assumption}</li>
-								{/each}
-							</ul>
-						{:else}
-							<span>No assumptions provided.</span>
-						{/if}
-					</Tooltip.Content>
-				</Tooltip.Root>
-			</div>
 		</div>
 
 		<p class="mt-3 text-sm leading-6 text-foreground">{content}</p>
+
+		<div class="mt-4 flex items-center justify-start gap-2">
+			<button
+				type="button"
+				class="inline-flex items-center gap-2 rounded-md border border-border/70 bg-background px-2.5 py-1 text-xs font-medium text-foreground transition-colors hover:bg-muted"
+			>
+				<Table2 class="size-4" />
+				<span>View data</span>
+			</button>
+
+			<Tooltip.Root>
+				<Tooltip.Trigger>
+					{#snippet child({ props })}
+						<button
+							type="button"
+							class="inline-flex items-center gap-2 rounded-md border border-border/70 bg-background px-2.5 py-1 text-xs font-medium text-foreground transition-colors hover:bg-muted"
+							aria-label="View assumptions"
+							{...props}
+						>
+							<CircleHelp class="size-4" />
+							<span>Assumptions</span>
+						</button>
+					{/snippet}
+				</Tooltip.Trigger>
+				<Tooltip.Content side="top" align="end" class="max-w-sm">
+					{#if assumptions.length}
+						<ul class="list-disc pl-4">
+							{#each assumptions as assumption}
+								<li>{assumption}</li>
+							{/each}
+						</ul>
+					{:else}
+						<span>No assumptions provided.</span>
+					{/if}
+				</Tooltip.Content>
+			</Tooltip.Root>
+		</div>
 	</div>
 </article>
