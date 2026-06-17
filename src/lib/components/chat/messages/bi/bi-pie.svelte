@@ -1,9 +1,10 @@
 <script>
-	import { Table2 } from "@lucide/svelte";
+	import { CircleHelp, Table2 } from "@lucide/svelte";
+	import * as Tooltip from "$lib/components/ui/tooltip/index.js";
 	import { Pie } from "svelte-chartjs";
-	import { ArcElement, Chart as ChartJS, Legend, Tooltip } from "chart.js";
+	import { ArcElement, Chart as ChartJS, Legend, Tooltip as ChartTooltip } from "chart.js";
 
-	ChartJS.register(ArcElement, Tooltip, Legend);
+	ChartJS.register(ArcElement, ChartTooltip, Legend);
 
 	let { message } = $props();
 
@@ -32,6 +33,38 @@
 
 	const title = $derived(pieOutput?.title ?? "Pie Chart");
 	const description = $derived(pieOutput?.description ?? "");
+
+	const assumptions = $derived.by(() => {
+		const rawAssumptions = message?.content?.data?.assumptions ?? message?.assumptions;
+
+		if (Array.isArray(rawAssumptions)) {
+			return rawAssumptions
+				.map((item) => String(item ?? "").trim())
+				.filter((item) => item.length > 0);
+		}
+
+		if (typeof rawAssumptions === "string") {
+			const trimmed = rawAssumptions.trim();
+			if (!trimmed) {
+				return [];
+			}
+
+			try {
+				const parsed = JSON.parse(trimmed);
+				if (Array.isArray(parsed)) {
+					return parsed
+						.map((item) => String(item ?? "").trim())
+						.filter((item) => item.length > 0);
+				}
+			} catch {
+				return [trimmed];
+			}
+
+			return [trimmed];
+		}
+
+		return [];
+	});
 
 	const points = $derived.by(() => {
 		const rows = Array.isArray(pieOutput?.data) ? pieOutput.data : [];
@@ -124,6 +157,30 @@
 				<Table2 class="size-4" />
 				<span>View data</span>
 			</button>
+
+			<Tooltip.Root>
+				<Tooltip.Trigger>
+					<button
+						type="button"
+						class="inline-flex items-center gap-2 rounded-md border border-border/70 bg-background px-2.5 py-1 text-xs font-medium text-foreground transition-colors hover:bg-muted"
+						aria-label="View assumptions"
+					>
+						<CircleHelp class="size-4" />
+						<span>Assumptions</span>
+					</button>
+				</Tooltip.Trigger>
+				<Tooltip.Content side="top" align="end" class="max-w-sm">
+					{#if assumptions.length}
+						<ul class="list-disc pl-4">
+							{#each assumptions as assumption}
+								<li>{assumption}</li>
+							{/each}
+						</ul>
+					{:else}
+						<span>No assumptions provided.</span>
+					{/if}
+				</Tooltip.Content>
+			</Tooltip.Root>
 		</div>
 	</div>
 </article>
