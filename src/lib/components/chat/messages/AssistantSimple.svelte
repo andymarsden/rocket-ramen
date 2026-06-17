@@ -54,7 +54,7 @@
 	<p
 		class="mb-3 text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground"
 	>
-		Assistant
+		LCC DATA Assistant
 	</p>
 	<div class="assistant-markdown wrap-break-word markdown-body">
 		{@html htmlContent}

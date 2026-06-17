@@ -151,6 +151,32 @@ export const rules = [
         }
     },
     {
+        id: "start_lcc_dc",
+
+        match(text) {
+            return text === "hello" || text.startsWith("hello ");
+        },
+
+        extract(text) {
+            return {
+                message: text.replace(/^hello\s*/, "")
+            };
+        },
+
+        async run({ message: inputMessage }) {
+            return message.create({
+                role: "assistant",
+                content: {
+                    text: "Hi Andy, let me get the data catalog started..."
+                },
+                //actions: [{action: "start_flow", flow_id: "cls_analytics_flow"}],
+                type: "start_flow",
+                flow_id: "start_lcc_dc",
+                intent_action: "start_flow"
+            });
+        }
+    },
+    {
         id: "query_dc",
 
         match(text) {

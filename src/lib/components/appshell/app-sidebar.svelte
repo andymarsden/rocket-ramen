@@ -13,8 +13,8 @@
 	// This is sample data.
 	const data = {
 		user: {
-			name: "shadcn",
-			email: "m@example.com",
+			name: "andym",
+			email: "andymarsden",
 			avatar: "https://github.com/shadcn.png",
 		},
 		teams: [
