@@ -106,14 +106,6 @@
 					<p class="mt-1 text-xs text-muted-foreground">{description}</p>
 				{/if}
 			</div>
-
-			<button
-				type="button"
-				class="inline-flex items-center gap-2 rounded-md border border-border/70 bg-background px-2.5 py-1 text-xs font-medium text-foreground transition-colors hover:bg-muted sm:justify-end"
-			>
-				<Table2 class="size-4" />
-				<span>View data</span>
-			</button>
 		</div>
 
 		{#if chartData}
@@ -123,5 +115,15 @@
 		{:else}
 			<p class="mt-4 text-sm text-muted-foreground">No chart data available.</p>
 		{/if}
+
+		<div class="mt-4 flex items-center justify-start gap-2">
+			<button
+				type="button"
+				class="inline-flex items-center gap-2 rounded-md border border-border/70 bg-background px-2.5 py-1 text-xs font-medium text-foreground transition-colors hover:bg-muted"
+			>
+				<Table2 class="size-4" />
+				<span>View data</span>
+			</button>
+		</div>
 	</div>
 </article>

@@ -198,31 +198,6 @@
 					<p class="mt-1 text-xs text-muted-foreground">{description}</p>
 				{/if}
 			</div>
-
-			<div class="flex items-center gap-2 sm:justify-end">
-				<button
-					type="button"
-					onclick={() => (sortMode = "value")}
-					class={`rounded-md border px-2.5 py-1 text-xs font-medium transition-colors ${
-						sortMode === "value"
-							? "border-foreground/40 bg-foreground text-background"
-							: "border-border/70 bg-background text-foreground hover:bg-muted"
-					}`}
-				>
-					Sort by value
-				</button>
-				<button
-					type="button"
-					onclick={() => (sortMode = "alpha")}
-					class={`rounded-md border px-2.5 py-1 text-xs font-medium transition-colors ${
-						sortMode === "alpha"
-							? "border-foreground/40 bg-foreground text-background"
-							: "border-border/70 bg-background text-foreground hover:bg-muted"
-					}`}
-				>
-					Sort A-Z
-				</button>
-			</div>
 		</div>
 
 		{#if chartData}
@@ -232,5 +207,30 @@
 		{:else}
 			<p class="mt-4 text-sm text-muted-foreground">No chart data available.</p>
 		{/if}
+
+		<div class="mt-4 flex items-center justify-start gap-2">
+			<button
+				type="button"
+				onclick={() => (sortMode = "value")}
+				class={`rounded-md border px-2.5 py-1 text-xs font-medium transition-colors ${
+					sortMode === "value"
+						? "border-foreground/40 bg-foreground text-background"
+						: "border-border/70 bg-background text-foreground hover:bg-muted"
+				}`}
+			>
+				Sort by value
+			</button>
+			<button
+				type="button"
+				onclick={() => (sortMode = "alpha")}
+				class={`rounded-md border px-2.5 py-1 text-xs font-medium transition-colors ${
+					sortMode === "alpha"
+						? "border-foreground/40 bg-foreground text-background"
+						: "border-border/70 bg-background text-foreground hover:bg-muted"
+				}`}
+			>
+				Sort A-Z
+			</button>
+		</div>
 	</div>
 </article>

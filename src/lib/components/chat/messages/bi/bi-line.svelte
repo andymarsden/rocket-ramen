@@ -255,7 +255,17 @@
 					<p class="mt-1 text-xs text-muted-foreground">{description}</p>
 				{/if}
 			</div>
+		</div>
 
+		{#if chartData}
+			<div class="mt-4 h-80">
+				<canvas bind:this={chartCanvas}></canvas>
+			</div>
+		{:else}
+			<p class="mt-4 text-sm text-muted-foreground">No chart data available.</p>
+		{/if}
+
+		<div class="mt-4 flex items-center justify-start">
 			<Sheet.Root bind:open={isSaveSheetOpen}>
 				<Sheet.Trigger class={`${buttonVariants({ variant: "outline" })} inline-flex items-center gap-2`}>
 					<Save class="size-4" />
@@ -299,13 +309,5 @@
 				</Sheet.Content>
 			</Sheet.Root>
 		</div>
-
-		{#if chartData}
-			<div class="mt-4 h-80">
-				<canvas bind:this={chartCanvas}></canvas>
-			</div>
-		{:else}
-			<p class="mt-4 text-sm text-muted-foreground">No chart data available.</p>
-		{/if}
 	</div>
 </article>
