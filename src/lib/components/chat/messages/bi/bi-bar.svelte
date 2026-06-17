@@ -1,17 +1,19 @@
 <script>
-	import {
-		BarController,
-		BarElement,
-		CategoryScale,
-		Chart as ChartJS,
-		Legend,
-		LinearScale,
-		Title,
-		Tooltip
-	} from "chart.js";
+import { CircleHelp, Table2 } from "@lucide/svelte";
+import * as Tooltip from "$lib/components/ui/tooltip/index.js";
+import {
+	BarController,
+	BarElement,
+	CategoryScale,
+	Chart as ChartJS,
+	Legend,
+	LinearScale,
+	Title,
+	Tooltip as ChartTooltip
+} from "chart.js";
 
 
-	ChartJS.register(BarController, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+ChartJS.register(BarController, CategoryScale, LinearScale, BarElement, Title, ChartTooltip, Legend);
 
 	let chartCanvas = $state();
 	let sortMode = $state("value");
@@ -63,6 +65,38 @@
 				};
 			})
 			.filter((row) => row.label.length > 0 && Number.isFinite(row.value));
+	});
+
+	const assumptions = $derived.by(() => {
+		const rawAssumptions = message?.content?.data?.assumptions ?? message?.assumptions;
+
+		if (Array.isArray(rawAssumptions)) {
+			return rawAssumptions
+				.map((item) => String(item ?? "").trim())
+				.filter((item) => item.length > 0);
+		}
+
+		if (typeof rawAssumptions === "string") {
+			const trimmed = rawAssumptions.trim();
+			if (!trimmed) {
+				return [];
+			}
+
+			try {
+				const parsed = JSON.parse(trimmed);
+				if (Array.isArray(parsed)) {
+					return parsed
+						.map((item) => String(item ?? "").trim())
+						.filter((item) => item.length > 0);
+				}
+			} catch {
+				return [trimmed];
+			}
+
+			return [trimmed];
+		}
+
+		return [];
 	});
 
 	const sortedPoints = $derived.by(() => {
@@ -198,6 +232,31 @@
 					<p class="mt-1 text-xs text-muted-foreground">{description}</p>
 				{/if}
 			</div>
+
+			<div class="flex flex-wrap items-center justify-end gap-2">
+				<button
+					type="button"
+					onclick={() => (sortMode = "value")}
+					class={`rounded-md border px-2.5 py-1 text-xs font-medium transition-colors ${
+						sortMode === "value"
+							? "border-foreground/40 bg-foreground text-background"
+							: "border-border/70 bg-background text-foreground hover:bg-muted"
+					}`}
+				>
+					Sort by value
+				</button>
+				<button
+					type="button"
+					onclick={() => (sortMode = "alpha")}
+					class={`rounded-md border px-2.5 py-1 text-xs font-medium transition-colors ${
+						sortMode === "alpha"
+							? "border-foreground/40 bg-foreground text-background"
+							: "border-border/70 bg-background text-foreground hover:bg-muted"
+					}`}
+				>
+					Sort A-Z
+				</button>
+			</div>
 		</div>
 
 		{#if chartData}
@@ -207,30 +266,37 @@
 		{:else}
 			<p class="mt-4 text-sm text-muted-foreground">No chart data available.</p>
 		{/if}
-
 		<div class="mt-4 flex items-center justify-start gap-2">
 			<button
 				type="button"
-				onclick={() => (sortMode = "value")}
-				class={`rounded-md border px-2.5 py-1 text-xs font-medium transition-colors ${
-					sortMode === "value"
-						? "border-foreground/40 bg-foreground text-background"
-						: "border-border/70 bg-background text-foreground hover:bg-muted"
-				}`}
+				class="inline-flex items-center gap-2 rounded-md border border-border/70 bg-background px-2.5 py-1 text-xs font-medium text-foreground transition-colors hover:bg-muted"
 			>
-				Sort by value
+				<Table2 class="size-4" />
+				<span>View data</span>
 			</button>
-			<button
-				type="button"
-				onclick={() => (sortMode = "alpha")}
-				class={`rounded-md border px-2.5 py-1 text-xs font-medium transition-colors ${
-					sortMode === "alpha"
-						? "border-foreground/40 bg-foreground text-background"
-						: "border-border/70 bg-background text-foreground hover:bg-muted"
-				}`}
-			>
-				Sort A-Z
-			</button>
-		</div>
-	</div>
+
+			<Tooltip.Root>
+				<Tooltip.Trigger>
+					<button
+						type="button"
+						class="inline-flex items-center gap-2 rounded-md border border-border/70 bg-background px-2.5 py-1 text-xs font-medium text-foreground transition-colors hover:bg-muted"
+						aria-label="View assumptions"
+					>
+						<CircleHelp class="size-4" />
+						<span>Assumptions</span>
+					</button>
+				</Tooltip.Trigger>
+				<Tooltip.Content side="top" align="end" class="max-w-sm">
+					{#if assumptions.length}
+						<ul class="list-disc pl-4">
+							{#each assumptions as assumption}
+								<li>{assumption}</li>
+							{/each}
+						</ul>
+					{:else}
+						<span>No assumptions provided.</span>
+					{/if}
+				</Tooltip.Content>
+			</Tooltip.Root>
+		</div>	</div>
 </article>
