@@ -6,7 +6,6 @@ export const composer = {
     sendMessage: async function (userText) {
         chatState.addUserMessage(userText);
 
-
         chatState.setTyping(true);
 
         const thinkingMessage = chatState.addThinkingMessage();
@@ -20,9 +19,22 @@ export const composer = {
 
         if(chatState.activeFlow) {
             console.log("Current flow:", chatState.activeFlow.id);
+            //We need to save the current steps answer and then move to the next step in the flow.
+            console.log("Current step", chatState.activeFlow.steps[chatState.activeFlow.activeStepIndex]);
+
+
+            let nextMessage = await flow.process();
+
+ chatState.removeMessage(thinkingMessage.id);
+
+            chatState.addMessage(nextMessage);
+                chatState.updateActiveMessageId(nextMessage.id);
+            return;;
+
+//THIS
+
             //return;
         }
-
 
         //Detect intent using the intent engine
         const get_intent = await intent.detect(userText);
@@ -33,6 +45,8 @@ export const composer = {
             //Do something here with failed intent detection, like sending a default message or logging the error
             assistantResponse = get_intent;
         }else{
+            //MEANS SINGLE INTENT DETECTED
+
             //Do something here with the detected intent, like executing the intent's action or sending a response
 
             assistantResponse = get_intent;

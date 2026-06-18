@@ -11,8 +11,6 @@
     import Test from "$lib/components/chat/messages/test.svelte";
     import DataCatalog from "$lib/components/chat/messages/data-catalog.svelte";
 
-
-
     function getBiChartType(message) {
         const output = message?.content?.output;
         const dataOutput = message?.content?.data?.output;
@@ -56,13 +54,10 @@
                 <div>
                     {#if message.type === "thinking"}
                         <ThinkingSimple {message} />
- {:else if message.type === "query_lcc_dc"}
-
-    <DataCatalog {message} />    
-
-
-                        {:else if message.type === "test" && message.role === "assistant"}
-                            <Test {message} />
+                    {:else if message.type === "query_lcc_dc"}
+                        <DataCatalog {message} />
+                    {:else if message.type === "test" && message.role === "assistant"}
+                        <Test {message} />
                     {:else if message.type === "query_qrios_bi" && message.role === "assistant"}
                         {#if isPieChartMessage(message)}
                             <BiPie {message} />
@@ -79,18 +74,17 @@
                         <UserSimple {message} />
                     {:else}
                         <AssistantSimple {message} />
-
-
                     {/if}
                 </div>
             {/each}
         </div>
     </div>
 </div>
+
 <!--  -->
 
 <style>
-   /* .fancy {
+    /* .fancy {
         position: relative;
         overflow: hidden;
         border: 2px solid rgba(255, 251, 20, 0.95);

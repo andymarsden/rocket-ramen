@@ -7,11 +7,19 @@
 		Legend,
 		LinearScale,
 		Title,
-		Tooltip
+		Tooltip,
 	} from "chart.js";
+	import * as Select from "$lib/components/ui/select/index.js";
 
-
-	ChartJS.register(BarController, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+	ChartJS.register(
+		BarController,
+		CategoryScale,
+		LinearScale,
+		BarElement,
+		Title,
+		Tooltip,
+		Legend,
+	);
 
 	let chartCanvas = $state();
 	let sortMode = $state("value");
@@ -44,7 +52,9 @@
 	const title = $derived(barOutput?.title ?? "Bar Chart");
 	const description = $derived(barOutput?.description ?? "");
 
-	const rows = $derived.by(() => (Array.isArray(barOutput?.data) ? barOutput.data : []));
+	const rows = $derived.by(() =>
+		Array.isArray(barOutput?.data) ? barOutput.data : [],
+	);
 	const xAxis = $derived(barOutput?.x_axis ?? {});
 	const yAxis = $derived(barOutput?.y_axis ?? {});
 
@@ -54,15 +64,19 @@
 
 		return rows
 			.map((row) => {
-				const label = String(row?.[xField] ?? row?.category ?? "").trim();
+				const label = String(
+					row?.[xField] ?? row?.category ?? "",
+				).trim();
 				const value = Number(row?.[yField] ?? row?.value ?? 0);
 
 				return {
 					label,
-					value
+					value,
 				};
 			})
-			.filter((row) => row.label.length > 0 && Number.isFinite(row.value));
+			.filter(
+				(row) => row.label.length > 0 && Number.isFinite(row.value),
+			);
 	});
 
 	const sortedPoints = $derived.by(() => {
@@ -97,9 +111,9 @@
 					//borderColor: "rgba(2, 132, 199, 1)",
 					borderWidth: 1,
 					borderRadius: 6,
-					maxBarThickness: 36
-				}
-			]
+					maxBarThickness: 36,
+				},
+			],
 		};
 	});
 
@@ -118,51 +132,50 @@
 		maintainAspectRatio: false,
 		plugins: {
 			legend: {
-				display: false
+				display: false,
 			},
 			title: {
-				display: false
-			}
+				display: false,
+			},
 		},
 
 		scales: {
 			x: {
 				title: {
 					display: Boolean(xAxis.label),
-					text: xAxis.label || "Hub Attended"
-					
+					text: xAxis.label || "Hub Attended",
 				},
 				ticks: {
 					maxRotation: 90,
 					minRotation: 90,
 					callback: function (value) {
 						return truncateAxisLabel(this.getLabelForValue(value));
-					}
+					},
 				},
 				grid: {
 					color: "#F1F3F7",
-					display: false
+					display: false,
 				},
 				border: {
-					display: false
-				}
+					display: false,
+				},
 			},
 			y: {
 				beginAtZero: true,
 				title: {
 					display: Boolean(yAxis.label),
-					text: yAxis.label || "Total Visits"
+					text: yAxis.label || "Total Visits",
 				},
 				grid: {
 					color: "#F1F3F7",
-					   borderDash:  [1, 4]
+					borderDash: [1, 4],
 					//display: false
 				},
 				border: {
-					display: false
-				}
-			}
-		}
+					display: false,
+				},
+			},
+		},
 	}));
 
 	$effect(() => {
@@ -176,7 +189,7 @@
 		const chart = new ChartJS(chartCanvas, {
 			type: "bar",
 			data,
-			options: chartOptions
+			options: chartOptions,
 		});
 
 		return () => {
@@ -186,42 +199,47 @@
 </script>
 
 <article>
-	<p class="mb-3 text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">
+	<p
+		class="mb-3 text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground"
+	>
 		Assistant
 	</p>
 
 	<div class="rounded-lg border border-border/60 bg-background/70 p-4">
-		<div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+		<div
+			class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between"
+		>
 			<div>
 				<p class="text-sm font-semibold text-foreground">{title}</p>
 				{#if description}
-					<p class="mt-1 text-xs text-muted-foreground">{description}</p>
+					<p class="mt-1 text-xs text-muted-foreground">
+						{description}
+					</p>
 				{/if}
 			</div>
 
 			<div class="flex items-center gap-2 sm:justify-end">
-				<button
-					type="button"
-					onclick={() => (sortMode = "value")}
-					class={`rounded-md border px-2.5 py-1 text-xs font-medium transition-colors ${
-						sortMode === "value"
-							? "border-foreground/40 bg-foreground text-background"
-							: "border-border/70 bg-background text-foreground hover:bg-muted"
-					}`}
-				>
-					Sort by value
-				</button>
-				<button
-					type="button"
-					onclick={() => (sortMode = "alpha")}
-					class={`rounded-md border px-2.5 py-1 text-xs font-medium transition-colors ${
-						sortMode === "alpha"
-							? "border-foreground/40 bg-foreground text-background"
-							: "border-border/70 bg-background text-foreground hover:bg-muted"
-					}`}
-				>
-					Sort A-Z
-				</button>
+				<Select.Root type="single" bind:value={sortMode}>
+					<Select.Trigger
+						id="sort-mode"
+						class="h-8 w-20 text-xs font-medium"
+					>
+						{sortMode === "alpha" ? "A-Z" : "Value"}
+						<!-- Sort -->
+					</Select.Trigger>
+					<Select.Content>
+						<Select.Group>
+							<Select.Label>Sort by</Select.Label>
+
+							<Select.Item value="value" label="Value"
+								>Value</Select.Item
+							>
+							<Select.Item value="alpha" label="A-Z"
+								>A-Z</Select.Item
+							>
+						</Select.Group>
+					</Select.Content>
+				</Select.Root>
 			</div>
 		</div>
 
@@ -230,7 +248,11 @@
 				<canvas bind:this={chartCanvas}></canvas>
 			</div>
 		{:else}
-			<p class="mt-4 text-sm text-muted-foreground">No chart data available.</p>
+			<p class="mt-4 text-sm text-muted-foreground">
+				No chart data available.
+			</p>
 		{/if}
+		<hr />
+		<p class="text-sm font-semibold text-foreground pt-2">Insights</p>
 	</div>
 </article>
