@@ -19,7 +19,7 @@ export const composer = {
 
         if (chatState.activeFlow) {
 
-//IS THIS AN END STEP??
+            //IS THIS AN END STEP??
 
             //We need to save the current steps answer and then move to the next step in the flow.
 
@@ -27,6 +27,8 @@ export const composer = {
             chatState.removeMessage(thinkingMessage.id);
             chatState.addMessage(nextMessage);
             chatState.updateActiveMessageId(nextMessage.id);
+            chatState.setTyping(false);
+            chatState.setTextAreaFocused(true);
             return;
         }
 

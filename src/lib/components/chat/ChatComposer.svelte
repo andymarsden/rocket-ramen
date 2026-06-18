@@ -13,6 +13,7 @@
     import { chatState, composer } from "$lib/chat";
     import { intent } from "$lib/chat/intent/engine.js";
 
+
     //#region Props
     //let { send } = $props();
     //#endregion
@@ -115,7 +116,7 @@
                     class="h-9 max-h-56 min-h-0 flex-1 resize-none border-0 bg-transparent px-3 py-1.5 text-base shadow-none focus-visible:ring-0 md:text-sm"
                     placeholder="Type a message..."
                     aria-describedby="composer-hint"
-                    disabled={chatState.isTyping}
+                    //disabled={chatState.isTyping}
                 />
 
                 <!-- <DropdownMenu.Root>
