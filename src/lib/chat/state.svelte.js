@@ -10,6 +10,7 @@ let isTextAreaFocused = $state(false);
 // let context = $state(null); 
 //let data_context = $state(null); // New state variable for data context
 
+let messageEventStream = $state([]); // {conversation_id:0, message_id:0, event_type:"", event_data:{}, timestamp:0,flow_id:0,value:""}  Will hold list of all message events, in a simple structure {messageId,eventType,eventData,timestamp} so we can track the history of events for each message. This will be useful for debugging and analytics. This is also where we save all the messages 
 
 export const chatState = {
     get messages() {
@@ -32,6 +33,29 @@ export const chatState = {
         return activeMessageId;
     },
 
+    get messageEventStream() {
+        return messageEventStream;
+    },
+
+    get conversationId() {
+        return conversationId;
+    },
+
+    setConversationId(newConversationId) {
+        conversationId = newConversationId;
+    },
+    addMessageEvent({ conversation_id, message_id,event_type, event_data, value,flow_id,responding_to }) {
+        messageEventStream.push({
+            conversation_id: conversation_id,
+            message_id: message_id,
+            event_type: event_type,
+            event_data: event_data,
+            timestamp: Date.now(),
+            flow_id: flow_id,
+            value: value,
+            responding_to:responding_to
+        });
+    },
     // Need to think about this.
     // // //Context 
     // // get context() {

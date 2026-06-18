@@ -9,7 +9,7 @@ export const composer = {
         chatState.setTyping(true);
 
         const thinkingMessage = chatState.addThinkingMessage();
-        
+
         await wait(600);
         //does it look like the user is trying to cancel or stop something?
         //is current flow?
@@ -17,23 +17,17 @@ export const composer = {
         //detect intent
 
 
-        if(chatState.activeFlow) {
-            console.log("Current flow:", chatState.activeFlow.id);
+        if (chatState.activeFlow) {
+
+//IS THIS AN END STEP??
+
             //We need to save the current steps answer and then move to the next step in the flow.
-            console.log("Current step", chatState.activeFlow.steps[chatState.activeFlow.activeStepIndex]);
 
-
-            let nextMessage = await flow.process();
-
- chatState.removeMessage(thinkingMessage.id);
-
+            let nextMessage = await flow.process(userText);
+            chatState.removeMessage(thinkingMessage.id);
             chatState.addMessage(nextMessage);
-                chatState.updateActiveMessageId(nextMessage.id);
-            return;;
-
-//THIS
-
-            //return;
+            chatState.updateActiveMessageId(nextMessage.id);
+            return;
         }
 
         //Detect intent using the intent engine
@@ -41,10 +35,10 @@ export const composer = {
 
         let assistantResponse = "";
 
-        if(!get_intent.success) {
+        if (!get_intent.success) {
             //Do something here with failed intent detection, like sending a default message or logging the error
             assistantResponse = get_intent;
-        }else{
+        } else {
             //MEANS SINGLE INTENT DETECTED
 
             //Do something here with the detected intent, like executing the intent's action or sending a response
@@ -54,28 +48,24 @@ export const composer = {
             chatState.removeMessage(thinkingMessage.id);
             chatState.addMessage(assistantResponse);
 
-            
+
             //is the intent to start a flow? if so, we need to start the flow and set the current flow in chatState
-            if(get_intent.intent_action === "start_flow") {
-                let starting_message =  await flow.start(get_intent.flow_id);
+            if (get_intent.intent_action === "start_flow") {
+                let starting_message = await flow.start(get_intent.flow_id);
                 chatState.addMessage(starting_message);
                 chatState.updateActiveMessageId(starting_message.id);
             }
-            
-                    
-            
 
-            
 
             //TODO : handle other intent actions like "end_flow", "next_step", etc.
             //TODO : sort out duplication
             chatState.setTyping(false);
             chatState.setTextAreaFocused(true);
-            
+
             return;
         }
 
-         chatState.updateActiveMessageId(null);
+        chatState.updateActiveMessageId(null);
 
 
         chatState.removeMessage(thinkingMessage.id);
@@ -89,8 +79,8 @@ export const composer = {
 
 
 const conversation = {
-    create(){},
-    load(conversation_id){},
-    save(){},
-    saveMessage(message_id){}
+    create() { },
+    load(conversation_id) { },
+    save() { },
+    saveMessage(message_id) { }
 }

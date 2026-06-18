@@ -41,9 +41,19 @@ export const flow = {
             return null;
         }
     },
-    async process(){
+    async process(userText){
         //debugger;
         //Lets just skip to the nextg question for the moment.
+        chatState.addMessageEvent({
+            conversation_id: chatState.conversationId,
+            message_id: chatState.activeMessageId,
+            event_type: "step_completed",
+            event_data: { step_index: chatState.activeFlow.activeStepIndex },
+            flow_id: chatState.activeFlow.id,
+            value: userText
+        });
+        //TODO Save the current step's answer to the flow's data context or some other storage mechanism.
+
         const currentIndex = chatState.activeFlow.activeStepIndex;
         const nextIndex = currentIndex + 1;
 
@@ -55,7 +65,7 @@ export const flow = {
                 options: chatState.activeFlow.steps[nextIndex].options || [],
                 //type: "echo",
             });
-//TODO Consider if this is the last step.
+        //TODO Consider if this is the last step.
 
 
         //Next step is dictated by next step - if its not present then we move to the next index - if no next index then we end the flow
